@@ -171,7 +171,16 @@ class DataBasics:
         # >>> YOUR CODE HERE >>>
         axes = fig.gca()
 
-        axes.scatter(self.df['MathScore'], self.df['WritingScore'], alpha=0.5, edgecolors='none')
+        x = self.df['MathScore']
+        y = self.df['WritingScore']
+
+        axes.scatter(x, y, alpha=0.5, edgecolors='none')
+
+        # slope and y-int
+        m, c = np.polyfit(x, y, 1)
+
+        axes.plot(x, m*x + c, color='black', label='RegressionLine')
+
         axes.set_title('Math vs Writing')
         axes.set_xlabel('Math')
         axes.set_ylabel('Writing')
