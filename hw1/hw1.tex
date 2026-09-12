@@ -1,0 +1,648 @@
+% %
+%
+
+
+\documentclass{article}
+% Keep the original pdfLaTeX Computer Modern fonts when compiling with XeLaTeX.
+\ifdefined\XeTeXversion
+  \usepackage[OT1]{fontenc}
+  \renewcommand{\rmdefault}{cmr}
+  \renewcommand{\sfdefault}{cmss}
+  \renewcommand{\ttdefault}{cmtt}
+\fi
+\usepackage[english]{babel}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{enumerate}
+\usepackage{multirow}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{url}
+\usepackage{dirtree}
+\usepackage{capt-of}
+
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\newcommand{\class}{ CS37300 }
+% \newcommand{\website}{{\tiny\url{https://www.cs.purdue.edu/homes/smith/courses/Fall2022}}}
+\newcommand{\homeworknumber}{1}
+\newcommand{\duedate}{Theory: Sep 16, 2026 (11:59pm); Programming: Sep 18, 2026 (11:59pm)}
+
+\setlength{\parskip}{1pc}
+\setlength{\parindent}{0pt}
+\setlength{\topmargin}{-3pc}
+\setlength{\textheight}{9.5in}
+\setlength{\oddsidemargin}{0pc}
+\setlength{\evensidemargin}{0pc}
+\setlength{\textwidth}{6.5in}
+
+\newcommand{\var}{\mbox{var}}
+\newcommand{\cov}{\mbox{cov}}
+
+\newcommand{\newpart}{
+\stepcounter{partno}
+\noindent
+{\bf (\alph{partno})}
+}
+
+\newcommand{\header}{
+\newpage
+\noindent
+\framebox{ \vbox{\class Homework \hfill --- Homework \homeworknumber --- \hfill  Last update: Sep 10, 2026
+  \\ \hfill {\color{red} Due: \duedate} }}
+\bigskip
+
+Name: \rule[-3pt]{7cm}{0.05em} \ \ \ \ PUID: \rule[-3pt]{7cm}{0.05em}
+
+{\bf Instructions and Policy:} 
+You are allowed to study with others and use online resources for reference, however, the work you turn in must be your own. This means do not copy/paste from Stack Exchange (or from another student.) If you have worked closely with other students, provide their name(s) and a brief (at most one paragraph) description of the interaction; if we feel this oversteps the bounds, we will discuss it with you. Each student should write up their own solutions independently.
+
+The requirements below are supposed to be followed in this and further homework assignments.
+
+\begin{itemize}
+\item For your theoretical submission:
+    \begin{itemize}
+    \item {\color{red} YOU MUST INCLUDE YOUR NAME IN THE HOMEWORK.}
+    \item The answers {\color{red} MUST be submitted via Gradescope}. 
+    \item Please write clearly and concisely - clarity and brevity will be rewarded. Refer to known facts as necessary. 
+    \item Theoretical questions {\color{red} MUST include the intermediate steps to the final answer}.
+    \end{itemize}
+\item For your programming answers:
+    \begin{itemize}
+        \item {\color{red} The Python scripts will be submitted separately via Gradescope}
+        \item Zero points will be given in any question where the Python code answer doesn't match the answer on Gradescope.
+        \item If the answer is/includes a plot, it should be added to your theoretical submission unless otherwise specified.
+    \end{itemize}
+\end{itemize}
+
+
+
+Your code is REQUIRED to run on Python 3.11 in an environment detailed in Homework 0 under the Python Installation section. While your code may run in other environments, any points lost due to environmental issues will not be regraded.
+
+Please make sure you don't use any libraries that are not imported for you. If such a library is used, you will get 0 pt for the coding part of the assignment.
+
+If your code doesn't run on Gradescope, then even if it compiles on another computer, it will still be considered not running and the respective part of the assignment will receive 0 pt.
+
+{\bf Total: 59 theory points + 45 programming points = 104 points.}
+
+}
+
+
+
+\newcounter{questionno}
+\setcounter{questionno}{0}
+\newcounter{partno}
+
+\newcommand{\question}[1]{
+\noindent
+\newline
+\stepcounter{questionno}
+\setcounter{partno}{0}
+{\bf \large Q\arabic{questionno} (#1 pts): }
+}
+
+\begin{document}
+
+\header
+
+\newpage
+% ---------------------------------------------------------------
+% CS37300 HW1 -- Theoretical Questions (modified version)
+% Drop-in replacement for the "Theoretical Questions" section.
+% Uses the same preamble/macros (\question, tcolorbox, etc.) as the original.
+% Student version: answer boxes left empty.
+% ---------------------------------------------------------------
+
+\section*{Theoretical Questions (20+14+25=59 pts)}
+
+{\bf Please submit your answers on Gradescope.}
+
+\question{20} {\bf \large True or False Questions}
+\paragraph{Answer the following as True or False with a justification or example. Points are uniformly distributed within the questions.}
+
+\begin{enumerate}[1.]
+
+% ---------- Q1.1 ----------
+\item Consider two random variables with the following joint probability density function:
+\[f(X,Y) = X + Y; \hspace{0.5cm} 0\leq X \leq 1,\hspace{0.4cm}  0 \leq Y \leq 1. \]
+Then, $X$ and $Y$ are independent.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.1cm,height=7cm]
+
+\end{tcolorbox}
+
+% ---------- Q1.2 ----------
+\item If two events are independent, then they are also conditionally independent given any third event; and if two events are conditionally independent given a third event, then they are also (unconditionally) independent. (If False, give a counterexample for each direction.)
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.1cm,height=10cm]
+
+\end{tcolorbox}
+
+% ---------- Q1.3 ----------
+\item $X$ is a random variable with $E[X]=20$ and $E[X^2]=425$. Then $V(3X-2)=225$.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.1cm,height=6cm]
+
+\end{tcolorbox}
+\newpage
+
+% ---------- Q1.4 ----------
+\item If $P(A \mid B, C) = P(A \mid C)$, then $A$ and $B$ are conditionally independent given $C$, that is, $P(A, B \mid C) = P(A \mid C)\,P(B \mid C)$.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.1cm,height=6cm]
+
+\end{tcolorbox}
+
+% ---------- Q1.5 ----------
+\item In the K-Nearest Neighbors algorithm, most of the computational cost occurs at training time, because the distances between all pairs of training instances must be precomputed before any prediction can be made.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.1cm,height=4cm]
+
+\end{tcolorbox}
+
+\end{enumerate}
+
+\newpage
+
+\question{14} {\bf \large Probability Review}
+\paragraph{1. (4 pts) Independence }~\\
+
+% ---------- Q2.1 ----------
+Three fair six-sided dice $D_1, D_2, D_3$ are rolled independently. Define the random variables
+\[
+X = \mathbf{1}[D_1 + D_2 \text{ is even}],\qquad
+Y = \mathbf{1}[D_2 + D_3 \text{ is even}],\qquad
+Z = \mathbf{1}[D_1 + D_3 \text{ is even}],
+\]
+where $\mathbf{1}[\cdot]$ equals $1$ if the condition holds and $0$ otherwise.
+Show that random variables $X, Y, Z$ are pairwise independent but not mutually independent.
+
+\emph{Hint:} the sum of two integers is even if and only if they have the same parity (both even or both odd).
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=15cm]
+
+\end{tcolorbox}
+
+\newpage
+
+\paragraph{2. ({\bf 6 pts}) Bayes Theorem  } ~\\
+
+% ---------- Q2.2 ----------
+A laptop manufacturer sources batteries from 3 suppliers. The probability that a supplier-1 battery fails within 2 years is 0.5, with the corresponding probabilities for supplier-2 and supplier-3 batteries being 0.3 and 0.1, respectively. Suppose that 25 percent of the batteries used come from supplier 1, 35 percent from supplier 2, and 40 percent from supplier 3.
+
+\begin{enumerate}
+    \item What is the probability that a randomly chosen battery will fail within 2 years?
+    \item Given that a battery failed within 2 years, what is the conditional probability that it came from supplier $j$, $j=1,2,3$?
+\end{enumerate}
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=15cm]
+
+\end{tcolorbox}
+
+\newpage
+
+\paragraph{3. ({\bf 4 pts}) Probability Distribution }~\\
+
+% ---------- Q2.3 ----------
+Consider two continuous random variables $X$ and $Y$ with joint probability density function
+\begin{align*}
+\begin{cases}
+  f_{XY}(x,y) = \frac{1}{16}xy \hspace{1cm} 0 < x < k, \hspace{0.25cm} 0 < y < k, \\
+  f_{XY}(x,y) = 0 \hspace{2cm} \text{otherwise,}
+\end{cases}
+\end{align*}
+
+Recall that a probability {\em density} function has the following properties:\\
+\[\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{XY}(x,y) dx dy = 1\]
+
+\begin{enumerate}[(a)]
+\item ({\bf 1 pt}) Compute the value of $k$ so that $f_{XY}(x,y)$ is a valid joint probability density function.
+\item ({\bf 1 pt}) Compute $P(Y > 2X)$: first express the integral in terms of $k$, then substitute the value from (a).
+\item ({\bf 1 pt}) Compute $P(X + Y > 2)$: first express the integral in terms of $k$, then substitute the value from (a) (you may assume $k \geq 2$).
+\item ({\bf 1 pt}) Using the $k$ value obtained from (a), prove that random variables $X$ and $Y$ are independent (in case they are) or are NOT independent (in case they aren't).
+\end{enumerate}
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=16cm]
+
+\end{tcolorbox}
+
+% ---------- Q3 KNN ----------
+\question{K-Nearest Neighbors 25}
+
+Consider a binary classification problem with labels \(y \in \{+1, -1\}\).
+You are given the following training set in \(\mathbb{R}^2\):
+
+\begin{center}
+\begin{tabular}{c c c}
+\hline
+Index & Point \(x = (x_1, x_2)\) & Label \\
+\hline
+1 & (1,1) & \(+1\) \\
+2 & (3,1) & \(+1\) \\
+3 & (1,3) & \(+1\) \\
+4 & (3,3) & \(-1\) \\
+5 & (150,150) & \(-1\) \\
+\hline
+\end{tabular}
+\end{center}
+
+Let the test point be
+\[
+x_{\text{test}} = (2,2).
+\]
+
+And consider the following unless otherwise stated:
+\begin{itemize}
+    \item Distance is Euclidean.
+    \item If $N$ points are tied at the \(k\)-th nearest distance, \emph{all} such $N$ points are included as neighbors, even if $N > k$.
+    \item Ties in the final vote are broken by predicting label \(-1\).
+\end{itemize}
+
+\begin{enumerate}
+\item[(a)] ({\bf 4 pts})
+Compute the predicted label of \(x_{\text{test}}\) using \textbf{1-NN}, \textbf{3-NN}, and \textbf{5-NN}.
+Explicitly list the neighbors used in each case.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=6cm]
+
+\end{tcolorbox}
+
+\newpage
+\item[(b)] ({\bf 4 pts})
+Suppose we rescale the first feature by a factor of 10, defining the transformation
+\[
+\tilde{x} = (10x_1, x_2).
+\]
+Recompute the predicted label of \(x_{\text{test}}\) using \textbf{3-NN} in the transformed space.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=6cm]
+
+\end{tcolorbox}
+
+\item[(c)] ({\bf 5 pts})
+Suppose the training point \((150,150)\) is replaced by \textbf{50 identical copies} of that same point, all labeled \(-1\).
+No other points are changed.
+
+What is the prediction of \textbf{3-NN}, \textbf{4-NN}, and \textbf{6-NN} at \(x_{\text{test}}\)?
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=6cm]
+
+\end{tcolorbox}
+
+\newpage
+\item[(d)] ({\bf 6 pts})
+Before applying \textbf{1-NN}, you may preprocess the data by applying a linear transformation
+\[
+T(x) = Ax
+\]
+to \emph{all} points (training points and the test point), where
+\(A \in \mathbb{R}^{2\times 2}\) is a rank~1 matrix.
+Please note that each point in the feature space is a vector in \(\mathbb{R}^2\), i.e., \(x = (x_1, x_2)\).
+After applying \(T\), Euclidean distance is used and \textbf{1-NN} is run in the transformed space, using the same tie-handling rules as above.
+
+Is it possible to choose such an \(A\) so that the 1-NN prediction at \(x_{\text{test}}\) is \(-1\)?
+If yes, give an explicit matrix \(A\) and justify your reasoning/steps for finding it, but if no, explain why.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=12cm]
+
+\end{tcolorbox}
+
+\newpage
+\item[(e)] ({\bf 6 pts})
+Same as part (d), except now require that \(A\) is \emph{full rank} (\(\operatorname{rank}(A)=2\)).
+
+Is it possible to choose such an \(A\) so that the 1-NN prediction at \(x_{\text{test}}\) is \(-1\)?
+If yes, give an explicit matrix \(A\) and justify your reasoning/steps for finding it, but if no, explain why.
+
+\begin{tcolorbox}[breakable,enhanced,notitle,width=16.6cm,height=14cm]
+
+\end{tcolorbox}
+
+\end{enumerate}
+
+\clearpage
+\setcounter{section}{0}
+\section*{Programming Part  (12 + 7 + 26 = 45 pts)} 
+
+\subsection*{General Instructions}
+For this assignment, please download the provided \verb|hw1.zip| file on \textbf{Brightspace}.
+
+
+\section*{Overview}
+
+In this assignment, you will learn and implement: 
+
+\begin{itemize}
+    \item A KNN classifier
+    \item Basics of data preprocessing
+    \item Logistic Regression on the data you have preprocessed 
+\end{itemize}
+
+\subsection*{Files}
+You will fill in functions in \verb|knn.py|, \verb|utils.py|, and \verb|lr.py|. After you finish, you will submit these as well
+as \verb|utils_knn.py| to Gradescope. The four submitted files are \verb|knn.py|, \verb|utils.py|, \verb|lr.py|, and \verb|utils_knn.py|.
+
+Besides these three files, you will also find \verb|utils_knn.py| and the dataset \path{pima-indians-diabetes.data.csv} in the same folder. You do not need to
+modify these files. \verb|utils_knn.py| contains some helper functions used by \verb|knn.py|.
+\subsection*{Packages}
+You will need the following packages for this assignment:
+\begin{itemize}
+    \item \verb|numpy|
+    \item \verb|pandas|
+    \item \verb|matplotlib| (only for plotting in \verb|lr.py|)
+\end{itemize}
+
+In particular, \textbf{you may not use \texttt{scikit-learn} anywhere in your submission}, even though it is installed in the grading environment. The autograder checks for this.
+
+If you want, you can install \verb|tqdm| to see a progress bar when running the autograder. This is not
+required for this class and might not be heavily focused on in future assignments, but it is a useful
+package to know if you are doing any machine learning work in Python.
+
+These packages should be installed if you have installed Anaconda. If you are not using Anaconda,
+you can install them using \verb|pip| or \verb|conda|. For example, you can run \verb|pip install numpy| in the terminal to
+install \verb|numpy|.
+
+Note that for this assignment, you should \textbf{not} use any other packages. You may see some other
+packages in the skeleton code, but they are only used for testing and grading. If you use any other
+packages, you may lose points. If you are not sure whether you can use a package, please ask the
+course staff.
+\subsection*{Evaluation}
+Unless otherwise specified, your code will be evaluated by an autograder on Gradescope using Python 3.11 and the package versions specified in the provided \texttt{environment.yml}. You should make sure your code runs without errors in this environment. Otherwise, you may lose points. You can submit your code to Gradescope as many times as you want. We will only grade the latest submission.
+
+There will be two types of test cases in the autograder: public (local) and hidden. Public test cases are visible to you, and you can see the results after you submit your code. You can also run the public test cases locally by running \verb|python <filename>.py| in the same folder as your code. Passing all public test cases \textbf{does not} guarantee you will get full credit for the assignment.
+
+Hidden test cases, however, are not visible to you, and you will not be able to see the results until
+your grade is published. The programming part is worth 45 points: 38 points from public and hidden autograder tests, 2 points for the plotting implementation, and 5 points for the report tasks described in the Logistic Regression evaluation section.
+
+\subsection*{Getting Help}
+If you have any questions about this assignment, please contact the course staff for help, preferably during office hours. You can also post your questions on the course forum. However, please do not post any code publicly. When asking questions, you should describe your problem in words and post the relevant code snippet. Please avoid showing a screenshot of your code to TAs and ask ``why my code is not working''.
+
+
+\section{KNN (1 + 1 + 2 + 2 + 4 + 2 = 12 pts)}
+In this part, you will implement a KNN classifier. From our lecture, you should know that KNN is a
+non-parametric classifier, which means it does not make any assumption about the underlying
+distribution of the data. Instead, it uses the training data directly to make predictions. In this
+assignment, you will implement the KNN classifier using the Minkowski distance with order 4 as the distance
+metric, and you will also implement a distance-weighted variant of the majority vote.
+
+You will write your code in knn.py.
+
+\subsection{(1 pts)  KNN - Constructor}
+Under \verb|class KNearestNeighbor|, fill in the constructor ( \verb|__init__| ) so that it takes in the number of
+neighbors \verb|k| and a boolean flag \verb|weighted| (default \verb|False|) and stores them as attributes \verb|self.k| and \verb|self.weighted|. You should also initialize variables \verb|self.X_train| and
+\verb|self.y_train| to be \verb|None|. These two attributes will be set in the \verb|fit| method. The \verb|weighted| flag is used in Q1.6.
+
+\subsection{(1 pts) KNN - Fit}
+Under \verb|class KNearestNeighbor|, fill in the method fit so that it takes in the training data \verb|X_train| and
+\verb|y_train| and stores them as attributes \verb|self.X_train| and \verb|self.y_train|. Note that \verb|X_train| is a 2D array of
+shape (\verb|n_samples|, \verb|n_features|), and \verb|y_train| is a 1D array of shape (\verb|n_samples|,). For this programming task, labels are nonnegative integers, as required by \verb|np.bincount|.
+
+The two \verb|assert| statements are there to help you debug. The first one checks whether the number of
+training samples is the same as the number of training labels. The second one checks whether the
+number of training samples is greater than or equal to the number of neighbors \verb|k|. If either of them
+fails, the supplied assertion raises an \verb|AssertionError| with an appropriate error message.
+
+\subsection{(2 pts) KNN - Minkowski Distance}
+Under \verb|class KNearestNeighbor|, fill in the method \verb|calc_distance| so that it takes in a single test sample \verb|x|, an integer $p$ for the order of the distance,
+and returns a 1D array of shape \verb|(n_samples,)| containing the Minkowski distance between \verb|x| and each
+training sample in \verb|self.X_train|.
+
+
+\textbf{About Minkowski distance}: The Minkowski distance is a versatile metric used in statistics and machine learning to compute the distance between two points in a vector space. Defined by a parameter \( p \), it generalizes several distances: Euclidean (\( p=2 \)) and Manhattan (\( p=1 \)). The distance between two points \( x \) and \( y \) is calculated as:
+\begin{equation}
+D(x, y) = \left( \sum_{i=1}^n |x_i - y_i|^p \right)^{\frac{1}{p}}
+\end{equation}
+where \( n \) is the number of dimensions. \textbf{In this homework, we will have $p=4$.} Both \verb|calc_distance| and \verb|predict| default to $p=4$. Your implementation must work for any integer $p \geq 1$ that is passed in; do not hard-code the value of $p$. Convert inputs to floating point before subtracting and raising differences to powers to avoid integer overflow.
+
+\subsection{(2 pts) KNN - Get Neighbors}
+Under \verb|class KNearestNeighbor|, fill in the method \verb|get_top_k| so that it takes in a 1D array \verb|distances| and
+returns a 1D array of shape \verb|(self.k,)| containing the indices of the top \verb|self.k| smallest elements in
+\verb|distances|. You may find the function \verb|np.argsort| useful.
+
+\subsection{(4 pts) KNN - Predict}
+Under \verb|class KNearestNeighbor|, fill in the method predict so that it takes in a 2D array \verb|X_predict| of shape
+(\verb|n_samples|, \verb|n_features|) and returns a 1D array of shape (\verb|n_samples|,) containing the predicted labels for
+each sample in \verb|X_predict|. You should use the \verb|get_top_k| method you implemented in Q1.4 to get the
+indices of the top \verb|self.k| smallest elements in \verb|distances|. Then, you can use these indices to get the
+corresponding labels from \verb|self.y_train| and return the majority label among them as the predicted label. You may find the
+function \verb|np.bincount| and the function \verb|np.argmax| useful. Choose the smallest label when vote totals tie. In this programming task, select exactly $k$ neighbors using \verb|np.argsort|; the extra-neighbor tie rule from Theory Q3 does not apply.
+
+\subsection{(2 pts) KNN - Distance-Weighted Voting}
+In plain KNN every one of the $k$ neighbors gets one vote, so a neighbor that is very close to the test point counts the same as one that is barely within the top $k$. A common refinement is \emph{distance-weighted} voting: neighbor $j$ at distance $d_j$ from the test point votes with weight
+\[
+w_j = \frac{1}{d_j + \varepsilon}, \qquad \varepsilon = 10^{-8},
+\]
+and the predicted label is the one with the largest \emph{total} weight. Extend your \verb|predict| method so that, when \verb|self.weighted| is \verb|True|, it uses this weighted vote instead of the plain majority vote (when \verb|self.weighted| is \verb|False|, the behavior from Q1.5 must be unchanged). The \verb|weights| argument of \verb|np.bincount| may be useful. Think about a small example where the two voting rules give different answers; the doctest in \verb|knn.py| contains one. Choose the smallest label if weighted vote totals tie.
+
+
+\newpage
+
+% \question{7} {\bf \large Data Preprocessing}
+\section{Data Preprocessing (2 + 3 + 2 = 7 pts)}
+
+\subsection*{1. Introduction to Data Preprocessing}
+This part provides a brief introduction to data preprocessing. \textbf{No code is required for this introduction; complete the implementation tasks below.}
+
+Data preprocessing is a crucial step in machine learning that involves preparing raw data for further analysis. It includes tasks such as cleaning, transforming, and organizing data into a usable format.
+
+In this exercise, you will implement key preprocessing functions: splitting datasets into training and testing sets, standardizing features, and calculating the accuracy of predictions.
+
+\subsubsection*{1.2 Key Components of the Implementation}
+The following sections explain how each part of data preprocessing is implemented, including dataset splitting, standardization, and accuracy calculation.
+
+\paragraph{Dataset Splitting}
+Splitting the dataset involves dividing it into training and testing subsets. This separation allows for model evaluation on unseen data. In this assignment you will implement the split yourself with \verb|numpy| (you may \textbf{not} call \verb|sklearn.model_selection.train_test_split|), following exactly this procedure so that your split matches the autograder's:
+\begin{enumerate}
+    \item Create a random generator \verb|rng = np.random.default_rng(random_state)|.
+    \item Draw a random permutation of the row indices: \verb|perm = rng.permutation(n_samples)|.
+    \item Let \verb|n_test = int(np.ceil(test_size * n_samples))|.
+    \item The first \verb|n_test| indices of \verb|perm| form the test set, the remaining indices form the training set (keep both in the order given by \verb|perm|).
+\end{enumerate}
+
+\paragraph{Standardization}
+Standardization transforms features to have zero mean and unit variance. The formula used is:
+\[
+z = \frac{x - \mu}{\sigma}
+\]
+Where \(z\) is the standardized value, \(x\) is the original value, \(\mu\) is the mean, and \(\sigma\) is the standard deviation. Both \(\mu\) and \(\sigma\) are computed on the \emph{training} set only and then applied to both the training and the test set.
+
+\paragraph{Accuracy Calculation}
+Accuracy measures how well the predicted labels match the true labels. It is calculated as:
+\[
+\text{Accuracy} = \frac{\text{Number of Correct Predictions}}{\text{Total Number of Predictions}}
+\]
+\subsection*{2. Implementation of Data Preprocessing}
+You are given a file \texttt{utils.py}. Please read the comments and existing implementations for more details. You are supposed to complete the following methods:
+\begin{enumerate}
+    \item (2 pts) Complete the \texttt{split\_\allowbreak data()} function, which takes in feature matrix \(X\) and target vector \(y\), splitting them into training and testing sets based on a specified test size, using the \texttt{numpy}-only procedure described above. The split must be reproducible: the same \texttt{random\_\allowbreak state} must always give the same split.
+    \item (3 pts) Complete the \texttt{standardize()} function, which standardizes both training and test datasets using the mean and standard deviation of the training set. To avoid a division-by-zero error, any feature whose standard deviation is exactly 0 must use \texttt{1e-7} in place of the standard deviation (this is checked by the autograder).
+    
+    \item (2 pts) Complete the \texttt{accuracy()} function, which calculates the accuracy score by comparing true labels with predicted labels.
+
+\end{enumerate}
+
+\clearpage
+
+% \question{21+3} {\bf \large Logistic Regression}
+\section{Logistic Regression (1 + 2 + 2 +2 + 2 + 1 + 3 + 3 + 3 + 2 + 1 + 4 = 26 pts)}
+
+
+\subsection*{1. Introduction to Logistic Regression}
+This part is a brief introduction about Logistic Regression. \textbf{No code is required for this introduction; complete the implementation tasks below.}
+
+Logistic regression is a popular algorithm for binary classification problems, where the goal is to assign an instance to one of two possible classes. The model estimates the probability of a data point belonging to a class, using the \textit{sigmoid function} to map predictions to probabilities in the range \([0,1]\).
+
+Given an input feature vector \(X\) and model parameters \(W\) (weights) and \(b\) (bias), logistic regression computes the weighted sum of inputs as:
+\[
+z = X \cdot W + b
+\]
+The output of the model is given by the sigmoid function:
+\[
+\hat{y} = \sigma(z) = \frac{1}{1 + e^{-z}}
+\]
+Where \(\hat{y}\) represents the probability that a data point belongs to class 1.
+
+\subsubsection*{1.2 Key Components of the Implementation}
+
+The following sections explain how each part of logistic regression is implemented, including the calculation of the loss function, gradients, and parameter updates during training.
+
+\paragraph{Sigmoid Function}
+
+The sigmoid function maps the real-valued output \(z\) into the \([0,1]\) interval:
+\[
+\sigma(z) = \frac{1}{1 + e^{-z}}
+\]
+This function is applied element-wise to the linear combination of input features \(X\), weights \(W\), and bias \(b\).
+
+\paragraph{Logistic Loss Function}
+
+The logistic loss (also known as binary cross-entropy loss) is used to measure how well the model's predicted probabilities match the true labels. The mean loss over the samples is:
+\[
+L_{\text{base}} = - \frac{1}{m} \sum_{i=1}^{m} \left[ y_i \log(\hat{y}_i + \epsilon) + (1 - y_i) \log(1 - \hat{y}_i + \epsilon) \right]
+\]
+Where \(m\) is the number of samples; \(y_i\) is the true label for the \(i\)-th sample; \(\hat{y}_i\) is the predicted probability for the \(i\)-th sample; \(\epsilon\) is a small constant to avoid numerical instability (e.g., \(1 \times 10^{-15}\)).
+
+
+\paragraph{L2 Regularization}
+
+To prevent overfitting, we add an L2 penalty term to the logistic loss. The L2 regularization encourages smaller weights, reducing the model's complexity:
+\[
+L_2 = \frac{\lambda}{2} \sum_{j=1}^{n} W_j^2
+\]
+Where \(\lambda\) is the regularization parameter, and \(n\) is the number of features. Note that only the weights \(W\) are penalized; the bias \(b\) is \textbf{not} part of the penalty. The total loss is the sum of the base logistic loss and the L2 regularization term:
+\[
+L = L_{\text{base}} + L_2
+\]
+
+\paragraph{Gradient Calculation}
+
+To optimize the model parameters, we compute the gradients of the loss function with respect to the weights \(W\) and bias \(b\). These gradients are then used in the gradient descent algorithm to update the parameters.
+
+\textbf{Gradient w.r.t. Weights} 
+The gradient of the loss function with respect to the weights is:
+\[
+\frac{\partial L}{\partial W} = \frac{1}{m} X^T (\hat{y} - y) + \lambda W
+\]
+Where \(\hat{y} = \sigma(X \cdot W + b)\), and \(\lambda W\) is the gradient of the L2 regularization term \(L_2\) defined above. $m$ is the number of samples.
+
+\textbf{Gradient w.r.t. Bias} 
+The gradient of the loss function with respect to the bias is:
+\[
+\frac{\partial L}{\partial b} = \frac{1}{m} \sum_{i=1}^{m} (\hat{y}_i - y_i)
+\]
+(the regularization term does not depend on \(b\), so it contributes nothing here).
+
+\paragraph{2.5 Gradient Descent Update}
+
+Once the gradients are computed, the model parameters are updated using gradient descent. The weights and bias are updated as:
+\[
+W = W - \alpha \cdot \frac{\partial L}{\partial W}
+\]
+\[
+b = b - \alpha \cdot \frac{\partial L}{\partial b}
+\]
+Where \(\alpha\) is the learning rate, controlling the step size of the update.
+
+\subsubsection*{1.3 Training Process}
+
+During training, the model uses full-batch gradient descent: each epoch computes the gradients using the entire training set and updates the weights and bias once. The objective is to minimize the logistic loss by continuously adjusting the parameters until the loss converges or a specified number of epochs is reached.
+
+\subsubsection*{1.4 Epoch and Convergence}
+
+An \textit{epoch} refers to one full pass through the training data. During each epoch, the model computes the predictions, loss, and gradients, and then updates the parameters. The training process may stop early if the loss converges, i.e., the change in loss between consecutive epochs is below a specified tolerance.
+
+\subsection*{2. Implementation of LR}
+You are given a file \texttt{lr.py}. In this Python file, you are supposed to implement the \texttt{Logistic\allowbreak Regression\allowbreak Classifier} which takes four hyperparameters: the max number of epochs allowed, the learning rate, and the tolerance, and the regularization parameter \texttt{l2\_\allowbreak penalty}.
+Please read the comments and the existing implementations for more details. You are supposed to complete several methods:
+
+\begin{enumerate}
+    \item (1 pts) Complete the \texttt{sigmoid()} method, which takes in an array input and calculates the output of a standard logistic function given the input.
+    
+    \item (2 pts) Complete the \texttt{predict\_\allowbreak proba()} function, which takes in the training samples as input and return the probabilities of each label for every training sample.
+    
+    \item (2 pts) Complete the \texttt{predict()} function, which takes in the training samples and predict their labels by calling \texttt{predict\_\allowbreak proba()}. Probabilities greater than or equal to 0.5 should be predicted as class 1, otherwise 0.
+
+    \item (2 pts) Complete the \texttt{base\_\allowbreak logistic\_\allowbreak loss()} function, which calculates the base loss from the true labels and predicted probabilities.
+
+    \item (2 pts) Complete the \texttt{l2\_\allowbreak regularization\_\allowbreak loss()} function, which calculates the L2 loss \(L_2 = \frac{\lambda}{2} \sum_j W_j^2\) as defined above (including the factor of \(\tfrac12\); the bias is not included).
+    
+    \item (1 pts) Complete the \texttt{logistic\_\allowbreak loss()} function, which adds the base logistic loss and the L2 regularization loss.
+
+    \item (3 pts) Complete the \texttt{gradient()} method, which takes in the training samples and their labels to calculate the gradient of the (regularized) loss with respect to the weights and the bias, using the formulas above.
+    
+    \item (3 pts) Complete the \texttt{train\_\allowbreak one\_\allowbreak epoch()} function, which takes in training samples, their labels, then applies one epoch of gradient descent by updating \texttt{self.weights} and \texttt{self.bias} with the values computed in question (7).
+    
+    \item (3 pts) Complete the \texttt{train()} function, which takes in training samples and validation samples with their labels. You should call \texttt{self.train\_\allowbreak one\_\allowbreak epoch()} in each iteration. After that, compute the training loss, validation loss, training accuracy, and validation accuracy using functions that are already implemented. You may find the \texttt{self.logistic\_\allowbreak loss()} method in \texttt{lr.py} and the \texttt{accuracy()} function in \texttt{utils.py} useful. \textbf{Note: if the absolute difference between the training losses of two consecutive epochs is smaller than the tolerance, you need to stop training.}
+    
+    \item (2 pts) Complete the \texttt{plot\_\allowbreak logistic\_\allowbreak regression\_\allowbreak curve()} method, which takes in the training and validation accuracies and losses as input and should plot the relationships between the training and validation accuracies and losses vs. training epochs. The function will finally save the plot as \texttt{learning\_\allowbreak curve\_\allowbreak lr.png} under your working directory.
+\end{enumerate}
+
+\subsection*{3. Evaluation}
+After the implementation of the \texttt{lr.py}, you are supposed to directly run \texttt{lr.py} code to do two things (the script trains on the Pima Indians Diabetes dataset, \path{pima-indians-diabetes.data.csv}, which is included in the handout):
+\begin{itemize}
+        \item  (1 pt) Attach the plotted learning curve to a small report, which should be submitted on gradescope together with the theoretical question submissions (we will designate a spot for a question submission with respect to this report). The figure will be generated under your
+working directory if your implementation of \texttt{plot\_\allowbreak logistic\_\allowbreak regression\_\allowbreak curve()} function is correct.
+    \item  (4 pt) Try at least 4 combinations of hyperparameters and visualize the results using \texttt{plot\_\allowbreak logistic\_\allowbreak regression\_\allowbreak curve()} function. You may try as many as you prefer, but only describe 4 runs and configurations you find informative. \textbf{DO NOT try hyperparameters at random}. Look for reasonable hyperparameter settings that may enable the model to perform better. Explain your reasoning in your hyperparameter search, attach the LR result plots of each hyperparameter setting, and talk about your findings in the report. You should try your best to outperform the baseline run, but if you fail to do so, as long as your search and results are well justified in the discussion, you will get full points.
+    
+\end{itemize}
+\clearpage
+
+\end{document}
