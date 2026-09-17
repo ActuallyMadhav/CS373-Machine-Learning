@@ -42,10 +42,10 @@ class KNearestNeighbor:
         """
 
         # >>> YOUR CODE HERE >>>
-        self.k = ...
-        self.weighted = ...
-        self.X_train = ...
-        self.y_train = ...
+        self.k = k
+        self.weighted = weighted
+        self.X_train = None
+        self.y_train = None
         # <<< END OF YOUR CODE <<<
 
     def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> None:
@@ -78,8 +78,8 @@ class KNearestNeighbor:
         assert self.k <= X_train.shape[0], "The number of nearest neighbors cannot be greater than the number of training data." # type: ignore
 
         # >>> YOUR CODE HERE >>>
-        self.X_train = ...
-        self.y_train = ...
+        self.X_train = X_train
+        self.y_train = y_train
         # <<< END OF YOUR CODE <<<
 
 
@@ -99,10 +99,10 @@ class KNearestNeighbor:
         # Convert the inputs to floating point before subtraction and powers
         # so integer arrays do not overflow (np.asarray(..., dtype=float) helps).
         # >>> YOUR CODE HERE >>>
-        differences = ...
-        powered_differences = ...
-        sum_of_powers = ...
-        distances = ...
+        differences = np.abs(self.X_train - np.asarray(x, dtype=float))
+        powered_differences = differences ** p
+        sum_of_powers = np.sum(powered_differences, axis=1)
+        distances = sum_of_powers ** (1/p)
         # <<< END OF YOUR CODE <<<
         return distances
     
@@ -127,7 +127,7 @@ class KNearestNeighbor:
         """
 
         # >>> YOUR CODE HERE >>>
-        top_k = ...
+        top_k = np.argsort(distance)[:self.k]
         # <<< END OF YOUR CODE <<<
 
         return top_k
@@ -185,9 +185,20 @@ class KNearestNeighbor:
         y_predict = np.zeros(X_predict.shape[0], dtype=self.y_train.dtype)
 
         # >>> YOUR CODE HERE >>>
-        distance = ...
-        top_k = ...
-        ...
+        for i in range(self.X_train.shape[0]):
+            distance = self.calc_distance(X_predict[i], p)
+            top_k = self.get_top_k(distance)
+            neighbours = self.y_train[top_k]
+
+            if not self.weighted:
+                votes = np.bincount(neighbours)
+            else:
+                neighbour_dist = distance[top_k]
+                eps = 0.00000001
+                w = 1 / (neighbour_dist + eps)
+                votes = np.bincount(neighbours, weights=w) 
+
+            y_predict[i] = np.argmax(votes)
         # <<< END OF YOUR CODE <<<
 
 
