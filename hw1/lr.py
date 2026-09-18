@@ -30,7 +30,8 @@ class LogisticRegressionClassifier:
         array([0.5   , 0.7311, 0.2689])
         """
         # >>> YOUR CODE HERE >>>
-        ...
+        sig = 1.0 / (1.0 + np.e ** (-z)) # can use np.exp(-z) instead of np.e ** (-z)
+
         # <<< END OF YOUR CODE <<<
         return sig
 
@@ -46,7 +47,8 @@ class LogisticRegressionClassifier:
         array([0.3775, 0.2689])
         """
         # >>> YOUR CODE HERE >>>
-        ...
+        z = (X @ self.weights) + self.bias
+        proba = self.sigmoid(z)
         # <<< END OF YOUR CODE <<<
         return proba
 
@@ -63,7 +65,15 @@ class LogisticRegressionClassifier:
         """
         probabilities = self.predict_proba(X)
         # >>> YOUR CODE HERE >>>
-        ...
+        # predictArray = []
+        # for prob in probabilities:
+        #     if(prob >= 0.5):
+        #         predictArray.append(1)
+        #     else:
+        #         predictArray.append(0)
+        # predictions = np.asarray(predictArray)
+        
+        predictions = (probabilities >= 0.5).astype(int) # same functionality as above loop but much faster
         # <<< END OF YOUR CODE <<<
         return predictions
 
@@ -79,7 +89,8 @@ class LogisticRegressionClassifier:
         """
         epsilon = 1e-15  # To avoid log(0)
         # >>> YOUR CODE HERE >>>
-        ...
+        sample_loss = y_true * np.log(y_pred + epsilon) + (1 - y_true) * np.log(1 - y_pred + epsilon) 
+        base_loss = -np.mean(sample_loss)
         # <<< END OF YOUR CODE <<<
         return base_loss
 
@@ -94,7 +105,7 @@ class LogisticRegressionClassifier:
         0.025
         """
         # >>> YOUR CODE HERE >>>
-        ...
+        l2_loss = (self.l2_penalty / 2) * np.sum(self.weights ** 2)
         # <<< END OF YOUR CODE <<<
         return l2_loss
 
@@ -111,7 +122,7 @@ class LogisticRegressionClassifier:
         0.3127
         """
         # >>> YOUR CODE HERE >>>
-        ...
+        loss = self.base_logistic_loss(y_true, y_pred) + self.l2_regularization_loss()
         # <<< END OF YOUR CODE <<<
         return loss
 
@@ -135,7 +146,12 @@ class LogisticRegressionClassifier:
         array([-0.1718, -0.724 ])
         """
         # >>> YOUR CODE HERE >>>
-        ...
+        y_hat_w = self.sigmoid(X @ self.weights + self.bias)
+        error = y_hat_w - y
+
+        gradient_w = (1/len(X)) * X.T @ error + self.weights * self.l2_penalty
+
+        gradient_b = (1/len(X)) * np.sum(error)
         # <<< END OF YOUR CODE <<<
         return gradient_w, gradient_b
     
@@ -155,7 +171,9 @@ class LogisticRegressionClassifier:
         0.0018
         """
         # >>> YOUR CODE HERE >>>
-        ...
+        gradient_w, gradient_b = self.gradient(X, y)
+        self.weights = self.weights - (self.learning_rate * gradient_w)
+        self.bias = self.bias - (self.learning_rate * gradient_b)
         # <<< END OF YOUR CODE <<<
 
     def train(self, X_train, y_train, X_val, y_val):
@@ -183,10 +201,35 @@ class LogisticRegressionClassifier:
         val_accuracies = []
         train_losses = []
         val_losses = []
+
+        dummy_loss = None
         
         for epoch in range(self.max_epochs):
             # >>> YOUR CODE HERE >>>
-            ...
+            self.train_one_epoch(X_train, y_train)
+
+            train_pred = self.predict(X_train)
+            train_accuracy = accuracy(y_train, train_pred)
+
+            val_pred = self.predict(X_val)
+            val_accuracy = accuracy(y_val, val_pred)
+
+            train_prob = self.predict_proba(X_train)
+            train_loss = self.logistic_loss(y_train, train_prob)
+
+            val_prob = self.predict_proba(X_val)
+            val_loss = self.logistic_loss(y_val, val_prob)
+
+            train_accuracies.append(train_accuracy)
+            val_accuracies.append(val_accuracy)
+            train_losses.append(train_loss)
+            val_losses.append(val_loss)
+
+            if dummy_loss is not None:
+                if abs(dummy_loss - train_loss) < self.tolerance:
+                    break
+
+            dummy_loss = train_loss
             # <<< END OF YOUR CODE <<<
             
         return train_accuracies, val_accuracies, train_losses, val_losses
@@ -200,7 +243,21 @@ class LogisticRegressionClassifier:
 
         # Plot training and validation accuracy and loss against epochs.
         # >>> YOUR CODE HERE >>>
-        ...
+        plt.subplot(1, 2, 1)
+        plt.plot(epochs, train_losses, label='Train Loss')
+        plt.plot(epochs, val_losses, label='Validation Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.title('Loss vs. Epoch')
+        plt.legend()
+ 
+        plt.subplot(1, 2, 2)
+        plt.plot(epochs, train_accuracies, label='Train Accuracy')
+        plt.plot(epochs, val_accuracies, label='Validation Accuracy')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.title('Accuracy vs. Epoch')
+        plt.legend()
         # <<< END OF YOUR CODE <<<
 
         plt.tight_layout()

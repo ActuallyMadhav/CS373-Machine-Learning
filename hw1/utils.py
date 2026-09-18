@@ -48,8 +48,12 @@ def standardize(X_train, X_test) -> Tuple[np.ndarray, np.ndarray]:
     True
     """
     # >>> YOUR CODE HERE >>>
-    X_train_std = ...
-    X_test_std = ...
+    mean = X_train.mean(axis=0)
+    std = X_train.std(axis=0)
+    stand_dev = np.where(std == 0, 1e-7, std)
+
+    X_train_std = (X_train - mean) / stand_dev
+    X_test_std = (X_test - mean) / stand_dev
     # <<< END OF YOUR CODE <<<
     
     return X_train_std, X_test_std
@@ -109,10 +113,18 @@ def split_data(X, y, test_size=0.25, random_state=42) -> Tuple[np.ndarray, np.nd
     array([1, 0, 1])
     """
     # >>> YOUR CODE HERE >>>
-    X_train = ...
-    y_train = ...
-    X_test = ...
-    y_test = ...
+    n_samples = X.shape[0]
+    rng = np.random.default_rng(random_state)
+    perm = rng.permutation(n_samples)
+    n_test = int(np.ceil(test_size * n_samples))
+
+    test_limit = perm[:n_test]
+    train_start = perm[n_test:]
+
+    X_train = X[train_start]
+    y_train = y[train_start]
+    X_test = X[test_limit]
+    y_test = y[test_limit]
     # <<< END OF YOUR CODE <<<
     return X_train, X_test, y_train, y_test
 
@@ -133,7 +145,9 @@ def accuracy(y_true, y_pred) -> float:
     0.75
     """
     # >>> YOUR CODE HERE >>>
-    acc = ...
+    correct_predictions = np.asarray(y_true) == np.asarray(y_pred)
+    accuracy = np.mean(correct_predictions)
+    acc = float(accuracy)
     # <<< END OF YOUR CODE <<<    
     return acc
 

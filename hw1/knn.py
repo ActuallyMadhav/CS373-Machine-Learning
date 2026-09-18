@@ -185,7 +185,7 @@ class KNearestNeighbor:
         y_predict = np.zeros(X_predict.shape[0], dtype=self.y_train.dtype)
 
         # >>> YOUR CODE HERE >>>
-        for i in range(self.X_train.shape[0]):
+        for i in range(X_predict.shape[0]):
             distance = self.calc_distance(X_predict[i], p)
             top_k = self.get_top_k(distance)
             neighbours = self.y_train[top_k]
