@@ -82,7 +82,7 @@ class GradientDescent:
 
         # >>> YOUR CODE HERE >>>
         z_clipped = np.clip(z, -500, 500)
-        sigmoid = 1 / (1 + np.e**(-z_clipped))
+        sigmoid = 1 / (1 + np.exp(-z_clipped))
         # <<< END OF YOUR CODE <<<
         return sigmoid
 
