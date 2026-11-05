@@ -1,0 +1,851 @@
+\documentclass[11pt]{exam}
+\usepackage[includemp, a4paper, textwidth=0.6\paperwidth, marginparwidth=0.2\paperwidth]{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{placeins}
+\usepackage{enumerate}
+\usepackage{multirow}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{url}
+\usepackage{dirtree}
+\usepackage{capt-of}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage[shortlabels]{enumitem}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\newcommand{\class}{ CS37300 }
+% \newcommand{\website}{{\tiny\url{https://www.cs.purdue.edu/homes/smith/courses/Fall2022}}}
+\newcommand{\homeworknumber}{4}
+\newcommand{\theoryduedate}{Nov. 2 (Monday), 2026 (11:59 pm)}
+\newcommand{\progduedate}{Nov. 6 (Friday), 2026 (11:59 pm)}
+
+\setlength{\parskip}{1pc}
+\setlength{\parindent}{0pt}
+\setlength{\topmargin}{-3pc}
+\setlength{\textheight}{9.5in}
+\setlength{\oddsidemargin}{0pc}
+\setlength{\evensidemargin}{0pc}
+\setlength{\textwidth}{6.5in}
+\newcommand{\var}{\mbox{var}}
+\newcommand{\hsigma}{\hat{\sigma}}
+\newcommand{\hmu}{\hat{\mu}}
+\newcommand{\hgamma}{\hat{\gamma}}
+\newcommand{\hy}{\hat{y}}
+\newcommand{\cov}{\mbox{cov}}
+\usepackage{enumitem,cleveref}
+\newcommand{\newpart}{
+\stepcounter{partno}
+\noindent
+{\bf (\alph{partno})}
+}
+
+\newcommand{\myheader}{
+\newpage
+\noindent
+\framebox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\class Homework \hfill --- Homework \homeworknumber --- \hfill  Last update: \today
+  \\ \hfill {\color{red} Theory Due: \theoryduedate} \\ \hfill {\color{red} Programming Due: \progduedate } }}
+\bigskip
+
+Name: \rule[-3pt]{0.34\linewidth}{0.05em} \ \ \ \ PUID: \rule[-3pt]{0.34\linewidth}{0.05em}
+
+{\bf Instructions and Policy:} 
+You are allowed to study with others and use online resources for reference, however, the work you turn in must be your own. This means do not copy/paste from Stack Exchange (or from another student.) If you have worked closely with other students, provide their name(s) and a brief (at most one paragraph) description of the interaction; if we feel this oversteps the bounds, we will discuss it with you. Each student should write up their own solutions independently.
+
+The requirements below are supposed to be followed in this and further homework assignments.
+
+\begin{itemize}
+\item For your theoretical submission:
+    \begin{itemize}
+    \item {\color{red} YOU MUST INCLUDE YOUR NAME IN THE HOMEWORK.}
+    \item The answers {\color{red} MUST be submitted via Gradescope}. 
+    \item Please write clearly and concisely - clarity and brevity will be rewarded. Refer to known facts as necessary. 
+    \item Theoretical questions {\color{red} MUST include the intermediate steps to the final answer}.
+    \end{itemize}
+\item For your programming answers:
+    \begin{itemize}
+        \item {\color{red} The Python scripts will be submitted separately via Gradescope}
+        \item Zero points will be given in any question where the Python code answer doesn't match the answer on Gradescope.
+        \item Plots and written analyses of the programming part go in the separate {\color{red} HW4 -- Programming Report} assignment on Gradescope.
+    \end{itemize}
+\end{itemize}
+
+
+Your code is REQUIRED to run on Python 3.11 using the supplied \texttt{environment.yml}. Follow the Miniconda installation instructions in Homework 0 and the HW4 setup commands below. While your code may run in other environments, any points lost due to environmental issues will not be regraded.
+
+Please make sure you didn't use any library/source explicitly forbidden to use. If such library/source code is used, you will get 0 pt for the coding part of the assignment.
+
+If your code doesn't run on Gradescope, then even if it compiles in another computer, it will still be considered not-running and the respective part of the assignment will receive 0 pt.
+
+}
+
+
+
+
+
+\newcounter{questionno}
+\setcounter{questionno}{0}
+% \newcounter{partno}
+
+\newcommand{\question}[1]{
+\noindent
+\newline
+\stepcounter{questionno}
+\setcounter{partno}{0}
+{\bf \large Q\arabic{questionno} (#1 pts): }
+}
+
+\begin{document}
+
+\myheader
+
+\newpage
+
+\subsection*{General Instructions}
+For this assignment, please download the provided \verb|hw4_handout.zip| file on \textbf{Brightspace}.
+
+This homework has three separate assignments on Gradescope: \textbf{HW4 -- Theory}, \textbf{HW4 -- Programming} and \textbf{HW4 -- Programming Report}. For the programming questions that ask you to plot figures or write an analysis, include your answers in the separate Programming Report PDF. For the coding questions, you submit your Python files to the programming assignment on Gradescope. The details of what goes where are in the Submission section.
+
+\newpage
+
+\section*{Theoretical Questions (8+27+25=60 pts)}
+
+{\bf Please submit your answers on Gradescope.}
+
+%=====================================================================
+\question{8} {\bf \large True or False questions}
+
+\paragraph{Answer the following as True or False with a justification or example. Points are uniformly
+distributed among the questions.}~\\
+
+\begin{enumerate}[1.]
+\item {\bf (2 pts)} In exact arithmetic, for any vector ${\bf z} \in \mathbb{R}^K$ with $K \geq 2$, finite entries, and any class $k$, the cross-entropy loss $-\log\left(\text{Softmax}({\bf z})_k\right)$ is strictly greater than 0.
+\begin{tcolorbox}
+\vspace{20ex}
+\end{tcolorbox}
+
+\item {\bf (2 pts)} Ignoring the image borders, if the input of a convolutional layer with stride 1 is shifted by one pixel to the right, its output is also shifted by one pixel to the right.
+\begin{tcolorbox}
+\vspace{20ex}
+\end{tcolorbox}
+
+\item {\bf (2 pts)} If the validation loss is lower than the training loss during training, there must be a bug, such as validation data leaking into the training set.
+\begin{tcolorbox}
+\vspace{20ex}
+\end{tcolorbox}
+
+\clearpage
+
+\item {\bf (2 pts)} A neural network with any number of hidden layers, in which every activation function is the identity $f(z) = z$, can exactly compute the XOR function on $\{0, 1\}^2$, i.e. $f(0,0) = f(1,1) = 0$ and $f(0,1) = f(1,0) = 1$.
+\begin{tcolorbox}
+\vspace{20ex}
+\end{tcolorbox}
+
+\end{enumerate}
+
+
+%=====================================================================
+\newpage
+\question{27} {\bf \large Deep Learning/Activations}
+
+In this question, we will dive deeper into training neurons with different activation functions.
+
+\paragraph{Inner product layer (fully connected layer)}
+As the name suggests, every output neuron of inner product layer is fully connected to the input neurons. 
+The output is a vector resulting from the multiplication of the input with a weight matrix $W$
+plus a bias offset, i.e.:
+\begin{equation}
+{\bf z}({\bf x}) = {\bf W x} + {\bf b},
+\end{equation}
+where the input ${\bf x}$ is $d$ dimensional column vector, and ${\bf W}$ is a $n\times d$ matrix and ${\bf b}$ is $n$ dimensional column vector.
+This is an affine transformation of the input.
+Often, we will concatenate the bias ${\bf b}$ into W by concatenating the constant $1$ to ${\bf x}$.
+The weight parameter ${\bf W}$
+and bias parameter ${\bf b}$ are learnable in this layer. 
+
+
+\paragraph{Activation.}
+We add nonlinear activation functions after the inner product layers to model
+nonlinear relationships.
+In this question we use the following activation functions:
+\begin{itemize}
+	\item \textbf{ReLU}: 
+	\begin{equation}
+	    \text{ReLU}(z) = \max(0, z) 
+	    \label{eq:relu}
+	\end{equation}
+
+	\item \textbf{Tanh}: 
+	\begin{equation}
+\text{Tanh}(z) = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}
+	    \label{eq:tanh}
+	\end{equation}
+    
+ \item \textbf{ELU}:  
+		\begin{equation}
+\text{ELU}(z) = \begin{cases} z & \text{if }z \geq 0,\\ \alpha (\exp(z) - 1) &\text{if } z < 0, \end{cases}
+	    \label{eq:elu}
+	\end{equation}
+   where $\alpha$ is a positive constant.
+\end{itemize}
+
+{\em If the input to the above functions is a vector ${\bf z}$, then each function is applied to each element of the vector.}
+
+Consider the negative log-likelihood as the score and gradient descent as the search algorithm used to find the optimal parameters of the neural network.
+
+%---------------------------------------------------------------------
+\clearpage
+\begin{enumerate}[1.]
+    \item ({\bf 6 pts}) Derivatives of the activation functions.
+    \begin{enumerate}[(a)]
+        \item ({\bf 3 pts}) Compute the derivatives of the ReLU, Tanh and ELU units with respect to variable $z$ in equations~\eqref{eq:relu}, ~\eqref{eq:tanh} and~\eqref{eq:elu}, respectively. For Tanh, start from its definition and express the result in terms of $\text{Tanh}(z)$.
+        (At points where the derivative is undefined, choose either one-sided slope for backpropagation and state your convention.)
+        \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+        \item ({\bf 2 pts}) Let $\alpha = 0.5$. Evaluate each of the three derivatives from (a) at $z = -1$ and at $z = 2$.
+        \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+\newpage
+        \item ({\bf 1 pt}) Let $\sigma(z) = \frac{1}{1 + e^{-z}}$ be the Sigmoid function. Show that $\text{Tanh}(z) = 2\sigma(2z) - 1$.
+        \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+    \end{enumerate}
+
+%---------------------------------------------------------------------
+\clearpage
+\item (\textbf{6 pts}) Let $b$ be a scalar bias and consider
+\[
+h({\bf x}) = f({\bf w}^\top {\bf x} + b),
+\]
+where $f$ is one of the following activation functions:
+\begin{enumerate}[(i)]
+    \item $f(z) = \text{ReLU}(z)$
+    \item $f(z) = \text{Tanh}(z)$
+    \item $f(z) = \text{ELU}(z)$
+\end{enumerate}
+\begin{enumerate}[(a)]
+    \item ({\bf 3 pts}) For each of the three activation functions, compute $\partial h({\bf x})/\partial w_j$, where $w_j$ is the element $j$ of the weight vector ${\bf w}$, and $\partial h({\bf x})/\partial b$
+    (you will need to use the chain rule; see class notes).
+    (At points where the derivative is undefined, choose either one-sided slope for backpropagation and state your convention.)
+    \begin{tcolorbox}
+\vspace{50ex}
+\end{tcolorbox}
+\newpage
+    \item ({\bf 3 pts}) Let ${\bf w} = (1,\, -2,\, 0.5,\, 3)^\top$, $b = -1.5$, ${\bf x} = (2,\, 1,\, -1,\, 0.5)^\top$ and $\alpha = 0.5$. For each of the three activation functions, compute the gradient vector $\partial h({\bf x})/\partial {\bf w}$ and the scalar $\partial h({\bf x})/\partial b$.
+    \begin{tcolorbox}
+\vspace{50ex}
+\end{tcolorbox}
+\end{enumerate}
+
+
+%---------------------------------------------------------------------
+\newpage
+ \item ({\bf 4 pts}) We will now use the ReLU gradient computed above to examine a drawback of ReLU neurons. A ReLU neuron applies ReLU to an affine combination of its inputs. If its activation derivative is zero on every training example, backpropagation gives zero gradients for its incoming weights and bias.
+
+ Consider a ReLU neuron $h({\bf x}) = \text{ReLU}({\bf w}^\top {\bf x} + b)$ trained on fixed inputs $\{{\bf x}_i\}_{i=1}^n$ with plain gradient descent (no momentum or regularization). Use exact arithmetic and the convention $\text{ReLU}'(0) = 1$. We say that the neuron has died when $\partial h({\bf x}_i)/\partial {\bf w} = {\bf 0}$ and $\partial h({\bf x}_i)/\partial b = 0$ for every training example. This definition concerns the neuron's local derivatives, rather than cancellation in the gradient of the total loss.
+ \begin{enumerate}[(a)]
+    \item ({\bf 2 pts}) Define the general mathematical condition relating $\{{\bf x}_i\}_{i=1}^n$, ${\bf w}$ and $b$ under which the gradient of the ReLU neuron with respect to ${\bf w}$ and $b$ is zero for all the inputs $\{{\bf x}_i\}_{i=1}^n$. Explain why, once this condition holds, the neuron stays dead for the rest of training.\\
+    {\bf Hint:} Apply the chain rule to each example's loss through $h({\bf x}_i)$, and use the convention $\text{ReLU}'(0) = 1$.
+    \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+\newpage
+    \item ({\bf 2 pts}) Let the training inputs be
+    \[
+    {\bf x}_1 = (2,\, -1)^\top, \quad {\bf x}_2 = (-1,\, 2)^\top, \quad {\bf x}_3 = (1,\, 1)^\top,
+    \]
+    with ${\bf w} = (1,\, -1)^\top$ and $b = 0.5$. Is this neuron dead? Keeping $w_2 = -1$ and $b = 0.5$ fixed, find all values of $w_1$ for which the neuron would be dead.
+    \begin{tcolorbox}
+\vspace{45ex}
+\end{tcolorbox}
+ \end{enumerate}
+
+
+%---------------------------------------------------------------------
+\clearpage
+\item (\textbf{4 pts}) Tanh and ELU neurons.
+\begin{enumerate}[(a)]
+    \item ({\bf 2 pts}) In exact arithmetic with finite preactivations and $\alpha > 0$, can Tanh and ELU neurons die in the sense defined in 2.3? Explain using your answers in 2.1 and 2.2. Does a nonzero activation derivative guarantee a nonzero loss gradient?
+    \begin{tcolorbox}
+\vspace{45ex}
+\end{tcolorbox}
+\newpage
+    \item ({\bf 2 pts}) Take the inputs $\{{\bf x}_i\}_{i=1}^3$ from 2.3(b), but now set ${\bf w} = (-1,\, -1)^\top$ and $b = 0.5$, and let $\alpha = 0.5$. Verify that a ReLU neuron with these parameters is dead (with $\text{ReLU}'(0) = 1$). Then, for a Tanh neuron and for an ELU neuron with the same parameters, compute the following sums of derivatives of the neuron outputs (not of the loss):
+    \[
+    \sum_{i=1}^{3} \frac{\partial h({\bf x}_i)}{\partial {\bf w}} \quad \text{and} \quad \sum_{i=1}^{3} \frac{\partial h({\bf x}_i)}{\partial b}.
+    \]
+    \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+\end{enumerate}
+
+
+%---------------------------------------------------------------------
+\clearpage
+
+\item (\textbf{7 pts}) Consider the following neural network with one hidden layer, trained on a single example $({\bf x}, {\bf y})$, where ${\bf y}$ is the one-hot encoding of the ground-truth class label and $\hat{\bf y}$ is the vector of predicted class probabilities. ${\bf W}_1, {\bf b}_1$ are the weight matrix and bias vector of the hidden layer, and ${\bf W}_2, {\bf b}_2$ are those of the output layer:
+\begin{align*}
+     {\bf z}_1 &= {\bf W}_1 {\bf x} + {\bf b}_1\\
+     {\bf a}_1 &= \text{ReLU}({\bf z}_1)\\
+     {\bf z}_2 &= {\bf W}_2 {\bf a}_1 + {\bf b}_2\\
+     \hat{\bf y} &= \text{Softmax}({\bf z}_2)\\
+     \mathcal{L}({\bf y},\hat{\bf y}) &= - \sum_{k} y_k \log(\hat{y}_k) 
+     &\text{ [Multi-class cross-entropy loss]}
+\end{align*}
+Hint: You can use the gradient of the loss with respect to ${\bf z}_2$, i.e. $\frac{\partial \mathcal{L}}{\partial {\bf z}_2} = \hat{\bf y} - {\bf y}$. Use the convention $\text{ReLU}'(0) = 1$, as in 2.3.
+\begin{enumerate}[(a)]
+    \item ({\bf 3 pts}) Derive $\frac{\partial \mathcal{L}}{\partial {\bf W}_2}$, $\frac{\partial \mathcal{L}}{\partial {\bf b}_2}$, $\frac{\partial \mathcal{L}}{\partial {\bf W}_1}$ and $\frac{\partial \mathcal{L}}{\partial {\bf b}_1}$. Express your answers in vector/matrix form.
+    \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+\newpage
+    \item ({\bf 4 pts}) Let ${\bf x} = (2,\, -1)^\top$ with true class 2, i.e. ${\bf y} = (0,\, 1,\, 0)^\top$, and
+    \[
+    {\bf W}_1 = \begin{bmatrix} 1 & 3 \\ 0.5 & 1 \\ 1 & 0 \end{bmatrix}, \quad
+    {\bf b}_1 = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}, \quad
+    {\bf W}_2 = \begin{bmatrix} 1 & 2 & 1 \\ -1 & 1 & 0.5 \\ 0 & -2 & 1 \end{bmatrix}, \quad
+    {\bf b}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}.
+    \]
+    Compute $\hat{\bf y}$ and $\mathcal{L}$, then compute the four gradients from (a). Which hidden units receive a zero gradient on their \emph{incoming} weights, and which on their \emph{outgoing} weights? Explain why the two sets are different.
+    \begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+\end{enumerate}
+
+\end{enumerate}
+
+%=====================================================================
+\clearpage
+\question{25} {\bf \large Convolutional Neural Networks}
+
+In this problem, use standard convolutions with dilation 1 and no channel grouping. Padding is symmetric on both sides of each spatial dimension.
+
+\begin{enumerate}[1.]
+\item ({\bf 8 pts}) We are given image $X$ and filter $F$ below.\\
+\begin{center}
+    X = \begin{tabular}{|*{6}{c|}}
+\hline
+2 & -1 & 0 & 3 & 1 & -2 \\
+\hline
+1 & 4 & -3 & 0 & 2 & 1 \\
+\hline
+-2 & 0 & 1 & 5 & -1 & 3 \\
+\hline
+3 & 1 & -2 & 2 & 0 & -1 \\
+\hline
+0 & -3 & 4 & 1 & 2 & 2 \\
+\hline
+1 & 2 & -1 & 0 & -4 & 3 \\
+\hline
+\end{tabular}
+F = \begin{tabular}{|c|c|c|}
+\hline
+0 & 1 & -1 \\
+\hline
+2 & 0 & 1 \\
+\hline
+-1 & 1 & 2 \\
+\hline
+\end{tabular}
+Y = \begin{tabular}{|c|c|c|}
+\hline
+$y_{11}$ & $y_{12}$ & $y_{13}$ \\
+\hline
+$y_{21}$ & $y_{22}$ & $y_{23}$ \\
+\hline
+$y_{31}$ & $y_{32}$ & $y_{33}$ \\
+\hline
+\end{tabular}
+\end{center}
+	
+\begin{enumerate}[(a)]
+\item ({\bf 4 pts}) Let $X$ be convolved with $F$ using zero-padding of 1, a stride of 2, and no bias to produce an output $Y$. As in standard CNN implementations, the filter is {\bf not} flipped (i.e., the operation is a cross-correlation). What is the size of $Y$? Compute the values of $y_{13}$, $y_{21}$ and $y_{33}$.\\
+{\bf Hint:} If $(N - K + 2P)/S$ is not an integer, round it down before adding 1, since the filter can only be placed where it fits completely inside the padded input.\\
+\begin{tcolorbox}
+\vspace{70ex}
+\end{tcolorbox}
+        
+
+\newpage
+\item ({\bf 4 pts})  Suppose you had an input feature map of size $12 \times 18$ (height $\times$ width) and a filter of size $4 \times 6$ (height $\times$ width), using a zero-padding of 2 and a stride of 3; what would be the resulting output size? Write your answer in terms of height $\times$ width. \\
+{\bf Hint:} If $(N - K + 2P)/S$ is not an integer, round it down before adding 1, since the filter can only be placed where it fits completely inside the padded input. Describe your reasoning for earning partial credit.\\
+\begin{tcolorbox}
+\vspace{44ex}
+\end{tcolorbox}
+\end{enumerate}
+
+\item ({\bf 17 pts}) These questions ask about the parameters of a convolutional layer and the layer's output (or intermediate outputs before the activation function).
+    \begin{enumerate}[(a)]
+        \item ({\bf 2 pts}) Consider a convolutional layer that takes a single-channel input of size $31\times31$ and uses a filter of size $5\times5$ with a padding of 1. The output has size $10 \times 10$.
+
+        \begin{itemize}
+            \item (1 pt) What is the stride?
+            \item (1 pt) Keeping the same filter and stride, what is the \textbf{smallest} padding that makes the output of size $11 \times 11$?
+        \end{itemize}
+        
+\begin{tcolorbox}
+\vspace{30ex}
+\end{tcolorbox}
+
+
+\clearpage
+
+\item ({\bf 4 pts}) Consider convolutional layers with $5 \times 5$ filters, a stride of 1 and no padding, stacked one after another. In all three parts below, every layer has one input channel and one output channel; all filters use stride 1 and no padding. Count the full potential receptive field, regardless of the numerical weight values.
+\begin{enumerate}[(i)]
+    \item (1 pt) A single pixel in the output of the first layer depends on which pixels of the input? Give the size of that region.
+    \begin{tcolorbox}
+\vspace{20ex}
+\end{tcolorbox}
+    \item (1 pt) A second $5 \times 5$ layer is applied to the output of the first. A single pixel of the second layer's output depends on a $5 \times 5$ patch of the first layer's output. How large is the region of the original input that it depends on?\\
+    {\bf Hint:} For each of those $5 \times 5$ first-layer pixels, find which input pixels it depends on, and take the union.
+    \begin{tcolorbox}
+\vspace{20ex}
+\end{tcolorbox}
+    \item (2 pts) How many stacked $5 \times 5$ layers are needed so that a single output pixel depends on an input region of at least $21 \times 21$? Compare the number of weights (ignoring biases) of three options that cover a $21 \times 21$ region: a single $21 \times 21$ filter, your stack of $5 \times 5$ layers, and a stack of $3 \times 3$ layers.
+    \begin{tcolorbox}
+\vspace{40ex}
+\end{tcolorbox}
+\end{enumerate}
+
+
+
+\clearpage
+
+
+\item ({\bf 3 pts}) Which of the following change the number of learnable parameters of a convolutional layer? \\
+\checkboxchar{$\Box$} \checkedchar{$\blacksquare$}
+\textbf{Select all that apply. No need to clarify your selections.}
+    \begin{checkboxes}
+        \choice 
+        number of filters
+        \choice
+        stride
+        \choice
+        filter size
+        \choice
+        number of input channels
+        \choice
+        padding
+        \choice
+        spatial size of the input image
+        \choice
+        None of the above.
+    \end{checkboxes}
+
+
+\item ({\bf 6 pts}) Suppose we are given RGB color images of size $40\times 40$ (so the input is $40 \times 40 \times 3$). The first convolutional layer has eight $5 \times 5$ filters with a stride of 2 and zero-padding of 1. The second convolutional layer has sixteen $3 \times 3$ filters with a stride of 1 and no padding. Consider that every filter adds a \textbf{bias term}.
+\begin{enumerate}[(i)]
+    \item (1 pt) What is the output size (height $\times$ width $\times$ channels) of each of the two layers?
+    \item (3 pts) What is the total number of learnable parameters in these two layers?
+    \item (2 pts) A $2 \times 2$ max pooling layer (stride 2, no padding, rounding down) is added after the second layer, followed by a Flatten layer and a fully connected layer with 10 outputs and one bias per output. What is the output size of the max pooling layer, and how many learnable parameters do the max pooling layer and the fully connected layer have?
+\end{enumerate}
+{\bf Hint:} Please detail your calculations to get partial credit.
+\begin{tcolorbox}
+\vspace{55ex}
+\end{tcolorbox}
+
+\clearpage
+
+\item ({\bf 2 pts}) A short video clip is given to a CNN as $T = 4$ consecutive RGB frames of size $32 \times 32$, stacked along the channel dimension (the color channels of the first frame, then those of the second frame, and so on).
+
+The first convolutional layer has five $3 \times 3$ filters with a stride of 1 and zero-padding of 1. What is the number of parameters you are learning in this layer with and without \textbf{bias}?  \\
+
+\begin{tcolorbox}
+\vspace{30ex}
+\end{tcolorbox}
+
+
+\end{enumerate}
+\end{enumerate}
+
+\clearpage
+
+\section*{Programming Part (18+14+10=42)} 
+
+
+In this assignment, you will be playing around with neural networks and using them to classify images. You will first implement an artificial neural network (ANN) from scratch using only \verb|numpy|, and then you will use \verb|PyTorch| to implement an ANN and a convolutional neural network (CNN).
+
+
+\subsection*{Files}
+You will fill in functions in \verb|numpy_ann.py|, \verb|pytorch_ann.py|, and \verb|pytorch_cnn.py|. After you finish, you will submit these, as well as any other files mentioned in the assignment, to Gradescope.
+
+Aside from these three files, you will also find \verb|utils.py| in the same folder. You do not need to modify it. \verb|utils.py| contains some helper functions, including \verb|load_mnist|, which loads the MNIST dataset of handwritten digits (grayscale $28 \times 28$ images, 10 classes) used in all three parts. The dataset is downloaded automatically into a \verb|data| folder the first time you run the code (about 11 MB).
+
+\subsection*{Packages}
+You will need the following packages for this assignment:
+\begin{itemize}
+    \item \verb|numpy|
+    \item \verb|scikit-learn|
+    \item torch, installation detailed below
+    \item torchvision, installation detailed below
+    \item matplotlib
+\end{itemize}
+
+Installing Anaconda or Miniconda does not guarantee that these packages and versions are available. Create the HW4 environment using the supplied \verb|environment.yml|, as described below.
+
+Note that for this assignment, you should not use any other packages. You may see some other packages in the skeleton code, but they are only used for testing and grading. If you use any other packages, you may lose points. If you are not sure whether you can use a package, please ask the course staff.
+
+\subsection*{Evaluation}
+Unless otherwise specified, your code will be evaluated by an auto grader on Gradescope. You should make sure your code runs without errors in the HW4 environment specified by \verb|environment.yml|. Otherwise, you may lose points. You can submit your code to Gradescope as many times as you want. We will only grade the latest submission.
+
+There will be two types of test cases in the autograder: public (local) and hidden. Public test cases are visible to you, and you can see the results after you submit your code. You can also run the doctests and the full training locally by running \verb|python <filename>.py| in the same folder as your code. Passing all public test cases \textbf{does not} guarantee you will get full credit for the assignment.
+
+Hidden test cases, however, are not visible to you, and you will not be able to see the results until
+your grade is published. The hidden tests compare each of your functions with a reference implementation on new inputs, so make sure every function follows the specification exactly (for example, the order in which the weights are initialized, and the exact GELU formula given below). The autograded programming score is the sum of the public and hidden test scores (41 points); the Programming Report is graded separately (1 point).
+
+The autograder does not train your networks on the full datasets. It checks your functions on small inputs and checks that your networks learn small, easy synthetic datasets. The full training runs (and the accuracy thresholds below) are for you to run locally; the resulting plots and numbers go in the \textbf{Programming Report}, a separate Gradescope assignment (see the Submission section at the end of this document).
+
+\subsection*{Getting Help}
+If you have any questions about this assignment, please contact the course staff for help, preferably during office hours. You can also post your questions on the course forum. However, please do not post any code publicly. When asking questions, describe your problem in words and share any relevant code snippet privately with course staff. Please avoid showing a screenshot of your code to TAs and ask ``why my code is not working''.
+
+\section*{Setting Up PyTorch}
+
+\subsection*{Installing PyTorch}
+
+PyTorch is a deep-learning framework that we will use in this assignment. Open a terminal in the extracted \verb|hw4_handout| folder and create a separate environment using the supplied configuration:
+\begin{lstlisting}[language={}]
+conda env create -f environment.yml -n cs373-hw4
+conda activate cs373-hw4
+python -c "import torch; print(torch.__version__)"
+\end{lstlisting}
+The environment specifies Python 3.11, PyTorch 2.5.1 and torchvision 0.20.1, along with the other dependencies. A CPU installation is sufficient. For optional GPU installation guidance, consult the \href{https://pytorch.org/get-started/locally/}{PyTorch website} while keeping the assignment's package versions.
+
+\subsection*{Checking GPU Support}
+Note: A GPU is not required for this assignment. Training time depends on your hardware. You can skip this section if you do not have a GPU.
+
+Deep learning models are usually trained on GPUs because they are much faster than CPUs due to their parallel architecture. If you have an NVIDIA GPU or an Apple Silicon Mac (M1, M2, and their variants), you can use it to train your models. If you do not have a GPU, you can still train your models on your CPU, but it will be slower.
+
+After you have installed PyTorch, start Python in your terminal and run the following code to check whether a GPU backend is available:
+
+\lstset{language=Python}
+\begin{lstlisting}
+import torch
+
+# True means the installed PyTorch can use CUDA
+print(torch.cuda.is_available())
+
+# True means the installed PyTorch can use the MPS backend
+print(torch.backends.mps.is_available())
+\end{lstlisting}
+
+\section{(18 pts) Artificial Neural Network with Numpy}
+In this part, you will implement an artificial neural network (ANN) with \textbf{two hidden layers} and \textbf{GELU} activations from scratch using only \verb|numpy|. You will then use the ANN to classify images from the MNIST dataset.
+
+You will write your code in \verb|numpy_ann.py|. Throughout this part, inputs are stored one example per row: a batch $X$ has shape $(m, \text{input\_size})$.
+
+\subsection{(2 pts) Numpy ANN - Constructor}
+
+Under \verb|class NumpyANN|, fill in the \verb|__init__| method so that it initializes five instance variables:
+\begin{itemize}
+    \item \verb|self.input_size|: the number of features in the input
+    \item \verb|self.hidden_size1|: the number of neurons in the first hidden layer
+    \item \verb|self.hidden_size2|: the number of neurons in the second hidden layer
+    \item \verb|self.output_size|: the number of classes in the output
+    \item \verb|self.lr|: the learning rate
+\end{itemize}
+The random seed is already set with \verb|np.random.seed()|, and \verb|W1| and \verb|b1| are already initialized for you: \verb|W1| uses \verb|np.random.randn| scaled by a coefficient of 0.01, and \verb|b1| uses \verb|np.zeros|. Initialize \verb|W2|, \verb|b2|, \verb|W3| and \verb|b3| in the same way, \textbf{in this order}, with shapes
+\begin{itemize}
+    \item \verb|W2|: \verb|(self.hidden_size1, self.hidden_size2)|, \verb|b2|: \verb|(1, self.hidden_size2)|
+    \item \verb|W3|: \verb|(self.hidden_size2, self.output_size)|, \verb|b3|: \verb|(1, self.output_size)|
+\end{itemize}
+
+The coefficient of 0.01 makes sure the weights are initialized to small values, but not zero: if all weights started at the same value, every neuron of a layer would compute the same function and receive the same gradient, so they could never learn different features. Because the weights are drawn from the random number generator one after the other, the order matters: the tests expect exactly the values produced by the order above.
+
+\subsection{(2 pts) Numpy ANN - GELU}
+Under \verb|class NumpyANN|, fill in the \verb|_gelu| method.
+
+The Gaussian Error Linear Unit (GELU) is a smooth activation used in neural networks such as transformers. It is defined as $\text{GELU}(x) = x\,\Phi(x)$, where $\Phi$ is the cumulative distribution function of the standard normal distribution: an input is multiplied by the probability that a standard normal variable is smaller than it, so large positive inputs pass almost unchanged and large negative inputs are mapped close to 0. Since \verb|numpy| has no $\Phi$ function, we use the standard tanh approximation (the same one used by \verb|nn.GELU(approximate="tanh")| in PyTorch):
+
+$$ \text{GELU}(x) = \frac{1}{2}\, x \left(1 + \tanh(u)\right), \qquad u = \sqrt{\frac{2}{\pi}}\left(x + 0.044715\, x^3\right) $$
+
+Throughout this programming part, GELU refers to this tanh approximation. Use exactly this formula: the tests compare your output with it.
+
+\subsection{(2 pts) Numpy ANN - GELU Derivative}
+
+Under \verb|class NumpyANN|, fill in the \verb|_gelu_grad| method so that it applies the derivative of the GELU function above to the input. Derive $\frac{\partial\, \text{GELU}(x)}{\partial x}$ yourself, using the product rule and $\tanh'(u) = 1 - \tanh^2(u)$. You can check your derivative with the doctests ($\text{GELU}'(0) = 0.5$) or by comparing it with $\frac{\text{GELU}(x+h) - \text{GELU}(x-h)}{2h}$ for a small $h$.
+
+Unlike ReLU, GELU has no interval on which its derivative is identically zero in exact arithmetic. Its derivative can be negative (about $-0.08$ at $x=-1$), and it approaches 0 as $x \to -\infty$. Isolated zeros are still possible, and floating-point arithmetic may round very small derivatives to zero.
+
+\subsection{(1 pt) Numpy ANN - Cross Entropy Loss}
+
+Under \verb|class NumpyANN|, fill in the \verb|_cross_entropy| method so that it takes in the predicted probabilities \verb|y_pred| and the one-hot true labels \verb|y_true| (note the order of the arguments) and returns the cross entropy loss between them. For a single example, the cross-entropy loss is $- \sum_{k} y_{true, k} \log(y_{pred, k})$, where $k$ runs over the classes.
+
+To keep the magnitude of the loss reasonable, we average it over the $n$ examples in the batch. Mathematically, this can be written as:
+
+$$ \text{CrossEntropyLoss}(y_{true}, y_{pred}) = - \frac{1}{n} \sum_{i=1}^n \sum_{k} y_{true, ik} \log(y_{pred, ik}) $$
+
+where $n$ is the number of examples.
+
+For numerical stability when reporting the loss, clip the predicted probabilities to $[10^{-12}, 1]$ before taking logarithms. For backpropagation, use the standard softmax--cross-entropy derivatives below.
+
+\subsection{(2 pts) Numpy ANN - Forward}
+
+Under \verb|class NumpyANN|, fill in the \verb|_forward| method so that it takes in an input \verb|X| and a boolean \verb|training| and returns the output of the neural network. Since we are using a neural network with two hidden layers, the output of the neural network is the output of the last layer passed through a Softmax activation function. Mathematically, the forward pass can be written as:
+
+\begin{align} z_1 &= X W_1 + b_1, & a_1 &= \text{GELU}(z_1) \\ z_2 &= a_1 W_2 + b_2, & a_2 &= \text{GELU}(z_2) \\ z_3 &= a_2 W_3 + b_3, & a_3 &= \text{Softmax}(z_3) \end{align} 
+
+The \verb|_softmax| method is already implemented for you.
+
+Note that the forward pass is different during training and testing. During training, we need to keep track of the outputs of every layer, so we can use them in the backward pass. Therefore, when \verb|training=True|, the outputs of those layers are stored in \verb|self| (we already did this for you). When \verb|training=False|, nothing is stored.
+
+\subsection{(3 pts) Numpy ANN - Backward}
+
+Under \verb|class NumpyANN|, fill in the \verb|_backward| method so that it takes in an input \verb|X| and the one-hot true labels \verb|y_true| and performs backpropagation. The gradients of the last layer are already computed for you. Let $\mathcal{L}$ be the \emph{mean} cross-entropy loss over the $m$ examples in the batch, and let $\odot$ denote the element-wise product. Define the unaveraged, per-example error arrays
+\begin{align*}
+\delta_3 &= a_3 - y_{true},\\
+\delta_2 &= (\delta_3 W_3^\top) \odot \text{GELU}'(z_2),\\
+\delta_1 &= (\delta_2 W_2^\top) \odot \text{GELU}'(z_1).
+\end{align*}
+Thus $\partial \mathcal{L}/\partial z_\ell = \delta_\ell/m$. The parameter gradients are
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W_3} &= \frac{1}{m}\,a_2^\top\delta_3,
+& \frac{\partial \mathcal{L}}{\partial b_3} &= \frac{1}{m}\sum_{\text{rows}}\delta_3,\\
+\frac{\partial \mathcal{L}}{\partial W_2} &= \frac{1}{m}\,a_1^\top\delta_2,
+& \frac{\partial \mathcal{L}}{\partial b_2} &= \frac{1}{m}\sum_{\text{rows}}\delta_2,\\
+\frac{\partial \mathcal{L}}{\partial W_1} &= \frac{1}{m}\,X^\top\delta_1,
+& \frac{\partial \mathcal{L}}{\partial b_1} &= \frac{1}{m}\sum_{\text{rows}}\delta_1.
+\end{align}
+Divide by $m$ exactly once for each parameter gradient, and retain a leading dimension of 1 for each bias gradient. Compute all gradients using the weights from the forward pass before updating any parameters.
+
+After you have computed the gradients, you should update the weights and biases using gradient descent. Recall that the update rule for gradient descent is:
+
+$$\theta = \theta - \alpha \frac{\partial \text{Loss}}{\partial\theta}$$
+
+
+where $\theta$ is a parameter, $\alpha$ is the learning rate (\verb|self.lr|), and $\frac{\partial \text{Loss}}{\partial \theta}$ is the gradient of the loss with respect to $\theta$.
+
+\subsection{(2 pts) Numpy ANN - Train}
+
+Under \verb|class NumpyANN|, fill in the \verb|train| method so that it takes in an input \verb|X_train|, a true label \verb|y_train|, a validation set \verb|X_val| and \verb|y_val|, the number of \verb|epochs| epochs, and the batch size \verb|batch_size|, and trains the neural network using the training set and validates it using the validation set.
+
+We will use mini-batch gradient descent to train the neural network for faster convergence. In each epoch, the training set is split into consecutive mini-batches of size \verb|batch_size| (the last one may be smaller). Then we train the neural network on each mini-batch. After each epoch, we compute the loss and accuracy of the neural network on the training and validation sets.
+
+You should use the \verb|_forward| and \verb|_backward| methods you implemented above to train the neural network. You should also use the \verb|_cross_entropy| method to compute the loss.
+
+\subsection{(1 pt) Numpy ANN - Predict}
+
+Under \verb|class NumpyANN|, fill in the \verb|predict| method so that it takes in an input \verb|X| and returns the predicted probabilities of the neural network. Recall that the output of the neural network is the output of a forward pass without saving the outputs of the hidden layers (i.e., \verb|training=False|). You should use the \verb|_forward| method you implemented above to compute the output of the neural network.
+
+\subsection{(1 pt) Numpy ANN - Accuracy}
+
+Under \verb|class NumpyANN|, fill in the \verb|accuracy| method so that it takes in the data \verb|X| and the true label \verb|y_true| and returns the accuracy of the neural network on the data. You should use the \verb|predict| method you implemented above to compute the predicted probabilities of the neural network. Use \verb|np.argmax(..., axis=1)| on both the predicted probabilities and the one-hot \verb|y_true| to obtain class labels, then return the fraction of matching labels.
+
+\subsection{(1 pt) Numpy ANN - Overall Test}
+
+Once you have finished implementing the above methods, you can run \verb|python numpy_ann.py| in the terminal to test your implementation. Your model will run on the MNIST dataset with a learning rate of 0.1. You should get an accuracy of at least 0.88 on the test set. On Gradescope, this point is awarded if your network learns a small synthetic dataset.
+
+\subsection{(1 pt) Numpy ANN - Learning Rate Analysis (Programming Report)}
+
+After the first training run, \verb|python numpy_ann.py| trains the same network, from the same initial weights, with a learning rate of 0.01, and prints the test accuracy of both networks. In your \textbf{Programming Report}:
+\begin{itemize}
+    \item Report the test accuracy obtained with learning rate 0.1 and with learning rate 0.01.
+    \item Using the training and validation losses printed during training, say whether the network trained with learning rate 0.01 is underfitting, overfitting, or generalizing after 250 epochs, and justify your answer.
+    \item In theory question Q2.3 a neuron \emph{dies} when its local derivatives with respect to its incoming weights and bias are zero on every training example. In exact arithmetic, can a GELU neuron satisfy this definition? Does it have an entire inactive interval like ReLU? Justify your answers using the GELU derivative you implemented.
+\end{itemize}
+
+\section{(14 pts) PyTorch ANN}
+
+In this part, you will implement an artificial neural network (ANN) with two hidden layers and ReLU activations using \verb|PyTorch|. You will then use the ANN to classify images from the MNIST dataset.
+
+Building a neural network using \verb|PyTorch| is very similar to building a neural network using \verb|numpy|. The main difference is that you compose the forward pass from built-in layers, and autograd computes the backward pass for you. Instead, you can use the \verb|torch.nn| module to build the neural network and the \verb|torch.optim| module to perform gradient descent. In most cases, you only need to specify the modules (layers, loss functions, optimizers, etc) and hyperparameters of the neural network. \verb|PyTorch| will take care of the rest.
+
+Before you start, you should make sure you have installed PyTorch correctly. You can run \verb|python -c "import| \verb|torch; print(torch.__version__)"| in the terminal to check the version of PyTorch you have installed. Use version 2.5.1, as specified in the supplied \verb|environment.yml| and the autograder environment.
+
+You will write your code in \verb|pytorch_ann.py|. You will see \verb|torch.Tensor| objects in the skeleton code. \verb|torch.Tensor| is the basic data structure in \verb|PyTorch|. It is similar to \verb|numpy.ndarray|, but it can also be used to represent a tensor on a GPU. For now, you can think of it as a \verb|numpy.ndarray|.
+
+\subsection{(3 pts) PyTorch ANN - Constructor}
+
+Under \verb|class PyTorchANN|, fill in the \verb|__init__| method so that it initializes five instance variables:
+
+\begin{itemize}
+    \item \verb|self.input_size|: the number of features in the input
+    \item \verb|self.hidden_size1|: the number of neurons in the first hidden layer
+    \item \verb|self.hidden_size2|: the number of neurons in the second hidden layer
+    \item \verb|self.output_size|: the number of classes in the output
+    \item \verb|self.seed|: the random seed
+\end{itemize}
+The random seed is then set for you with \verb|torch.manual_seed|. Finally, inside \verb|nn.Sequential|, use \verb|nn.Linear| to create the three layers of the neural network, with \verb|nn.ReLU| after each of the two hidden layers:
+\begin{center}
+\verb|Linear(input_size, hidden_size1) -> ReLU -> Linear(hidden_size1, hidden_size2)| \\
+\verb|-> ReLU -> Linear(hidden_size2, output_size)|
+\end{center}
+The last layer must return raw logits. Do not add a Softmax layer: \verb|nn.CrossEntropyLoss| combines log-softmax with the negative log-likelihood loss for class labels.
+
+\subsection{(1 pt) PyTorch ANN - Forward}
+Under \verb|class PyTorchANN|, fill in the \verb|forward| method so that it takes in an input \verb|X| and returns the output of the neural network. To run the input through the neural network, simply call \verb|self.model(X)|, where \verb|self.model| is the neural network you initialized in the constructor.
+
+Calling \verb|self.model(X)| invokes the module call machinery, which runs its \verb|forward| method and any registered hooks. Use this form rather than calling \verb|self.model.forward(X)| directly, which bypasses those hooks.
+
+You do not need to implement backward derivatives: \verb|loss.backward()| uses autograd to compute gradients, and the \verb|torch.optim| optimizer applies the parameter updates.
+
+\subsection{(5 pts) PyTorch ANN - Fit}
+
+Under \verb|class PyTorchANN|, fill in the \verb|fit| method so that it takes in an input \verb|X_train|, a true label \verb|y_train|, a validation set \verb|X_val| and \verb|y_val|, the number of \verb|epochs| epochs, the batch size \verb|batch_size|, and the learning rate. It trains the neural network using the training set and validates it using the validation set. (The method is called \verb|fit| rather than \verb|train| because \verb|nn.Module| already has a method \verb|train(mode)|, which PyTorch calls internally, for example inside \verb|.eval()|.)
+
+First, you need to define the loss function and optimizer. You should use \verb|nn.CrossEntropyLoss| as the loss function and \verb|torch.optim.SGD| (stochastic gradient descent, with no other options) as the optimizer. You should use the learning rate you passed in as the learning rate of the optimizer and use \verb|self.model.parameters()| as the parameters of the optimizer. This will tell the optimizer to update the parameters of the neural network.
+
+Then, you can train the neural network using the mini-batches. For each mini-batch, the gradients are first set to zero with \verb|optimizer.zero_grad()| (already done for you). Then you should run the mini-batch through the neural network using \verb|self.forward| and compute the loss using the loss function you defined above. After that, you should call \verb|loss.backward()| to perform the backward propagation. Finally, you should call \verb|optimizer.step()| to update the parameters of the neural network using gradient descent.
+
+\subsection{(1 pt) PyTorch ANN - Predict}
+
+Under \verb|class PyTorchANN|, fill in the \verb|predict| method so that it takes in an input \verb|X| and returns the predicted labels of the neural network. To run the input through the neural network, simply call \verb|self.forward(X)|. Then use \verb|torch.argmax(..., dim=1)| to get one predicted label per example.
+
+\subsection{(1 pt) PyTorch ANN - Visualize Learning Curve}
+
+Under \verb|class PyTorchANN|, fill in the \verb|plot_train_val_metrics| method so that it creates a side-by-side plot of the training and validation loss and accuracy curves. You should use the predefined \verb|ax| to plot the curves. Running \verb|python pytorch_ann.py| saves the plot as \path{pytorch_ann_train_val_metrics.png}; include it in the \textbf{Programming Report}.
+
+\subsection{(2 pts) PyTorch ANN - Overall Test}
+
+Once you have finished implementing the above methods, you can run \verb|python pytorch_ann.py| in the terminal to test your implementation. Your model will run on the MNIST dataset. You should get an accuracy of at least 0.88 on the test set. On Gradescope, these points are awarded if your network learns a small synthetic dataset.
+
+\subsection{(1 pt) PyTorch ANN - Analysis of Learning Curve}
+
+Under \verb|class PyTorchANN|, use your learning curve and program output to fill in the \path{report_my_judgement} method so that it returns a string that describes the performance of the neural network by the end of training. Return \verb|underfitting| if the neural network is underfitting, \verb|overfitting| if the neural network is overfitting, and \verb|generalizing| if the neural network is generalizing.
+
+\section{(10 pts) PyTorch CNN}
+In this part, you will implement a convolutional neural network (CNN) using \verb|PyTorch|. You will then use the CNN to classify images from the MNIST dataset.
+
+You will write your code in \verb|pytorch_cnn.py|. The training loop (\verb|fit|, which uses the Adam optimizer), \verb|predict| and the plotting function are already implemented for you.
+
+\subsection{(5 pts) PyTorch CNN - Constructor}
+You should use \verb|nn.Sequential| and use \verb|nn.Conv2d|, \verb|nn.ReLU|, \verb|nn.MaxPool2d|, \verb|nn.BatchNorm2d|, \verb|nn.Dropout|, \verb|nn.Flatten|, and \verb|nn.Linear| to define the layers. The last layer must return raw logits. Do not add a Softmax layer: \verb|nn.CrossEntropyLoss| combines log-softmax with the negative log-likelihood loss for class labels.
+
+You might be wondering what the parameters of \verb|nn.Conv2d| mean. \verb|nn.Conv2d| is a convolutional layer that takes in a 4D tensor as input and outputs a 4D tensor. The first dimension of the input tensor is the batch size, the second dimension is the number of channels, and the last two dimensions are the height and width of the input. The first dimension of the output tensor is the batch size, the second dimension is the number of channels, and the last two dimensions are the height and width of the output. The parameters of \verb|nn.Conv2d| are:
+\begin{itemize}
+    \item \verb|in_channels|: the number of channels in the input
+    \item \verb|out_channels|: the number of channels in the output
+    \item \verb|kernel_size|: the size of the convolutional kernel
+    \item \verb|stride|: the stride of the convolution
+    \item \verb|padding|: the padding of the convolution
+\end{itemize}
+\verb|stride| is the number of pixels the kernel moves each time. \verb|padding| is the number of pixels added to each side of the input. For example, if the input is a 4x4 image and the kernel size is 3x3, then the output will be a 2x2 image if \verb|stride=1| and \verb|padding=0|, a 4x4 image if \verb|stride=1| and \verb|padding=1|, and a 2x2 image if \verb|stride=2| and \verb|padding=1|. The formula for calculating the output size is:
+
+$$ \text{Output Size} = \left\lfloor \frac{\text{Input Size} - \text{Kernel Size} + 2 \times \text{Padding}}{\text{Stride}} \right\rfloor + 1 $$
+
+where $\lfloor \cdot \rfloor$ rounds down: when the division is not exact, the last positions where the kernel would not fit completely are dropped.
+
+\verb|nn.MaxPool2d| is a max pooling layer that is used to reduce the size of the input. You can think of it as a layer that takes the maximum value of each \verb|kernel_size x kernel_size| block of the input. By default its stride equals its kernel size, so \verb|nn.MaxPool2d(2)| halves the height and width, rounding down (for example, $7 \times 7$ becomes $3 \times 3$); the same formula as above applies, with no padding.
+
+\verb|nn.BatchNorm2d| normalizes each channel using statistics over the batch and spatial dimensions during training, followed by a learnable scale and shift. A small positive constant in the denominator stabilizes the computation. With the default settings, evaluation uses running estimates of the mean and variance.
+
+\verb|nn.Dropout| is a regularizer that can reduce overfitting. During training it randomly sets input elements to 0 and rescales the retained elements; during evaluation it is the identity. This temporary masking is different from a permanently dead ReLU neuron.
+
+Now, under \verb|class PyTorchCNN|, fill in the model definition so that it defines a convolutional neural network with the following architecture:
+\begin{itemize}
+    \item (Block 1)
+    \begin{itemize}
+        \item A convolutional layer with \verb|in_channels=1|,     
+        \verb|out_channels=32|,\\
+        \verb|kernel_size=3|, \verb|stride=1|, and \verb|padding=1|
+        \item A ReLU activation function
+        \item A max pooling layer with \verb|kernel_size=2|
+        \item A BatchNorm2D layer with \verb|num_features=32|
+        \item A Dropout layer with \verb|p=0.3|
+    \end{itemize}
+    \item (Block 2)
+    \begin{itemize}
+        \item A convolutional layer with \verb|in_channels=32|, 
+        \verb|out_channels=64|,\\
+        \verb|kernel_size=3|, \verb|stride=1|, and \verb|padding=1|
+        \item A ReLU activation function
+        \item A max pooling layer with \verb|kernel_size=2|
+        \item A BatchNorm2D layer with \verb|num_features=64|
+        \item A Dropout layer with \verb|p=0.3|
+    \end{itemize}
+    \item (Block 3)
+    \begin{itemize}
+        \item A convolutional layer with \verb|in_channels=64|,        
+        \verb|out_channels=128|,\\
+        \verb|kernel_size=3|, \verb|stride=1|, and \verb|padding=1|
+        \item A ReLU activation function
+        \item A max pooling layer with \verb|kernel_size=2|
+        \item A BatchNorm2D layer with \verb|num_features=128|
+        \item A Dropout layer with \verb|p=0.3|
+    \end{itemize}
+    \item (Block 4)
+    \begin{itemize}
+        \item A Flatten layer
+        \item A fully connected layer with \verb|in_features=?|,     
+        \verb|out_features=256|
+        \item A ReLU activation function
+        \item A fully connected layer with \verb|in_features=256|, 
+        \verb|out_features=self.num_classes|
+    \end{itemize}
+\end{itemize}
+
+You must determine \verb|in_features| of the first fully connected layer yourself: starting from a $1 \times 28 \times 28$ image, track the number of channels and the height and width of the feature map through every convolutional and max pooling layer (BatchNorm, ReLU and Dropout do not change the shape), and multiply them at the Flatten layer. The forward-pass doctest fails with a shape error if this number is wrong.
+
+\subsection{(1 pt) PyTorch CNN - Number of Parameters}
+Under \verb|class PyTorchCNN|, fill in the \verb|count_parameters| method so that it returns the total number of trainable parameters (all weights and biases, including those of the BatchNorm layers) of the model. Your code must work for any model, not only for the architecture above. \textbf{Hint:} \verb|self.parameters()| yields every parameter tensor, \verb|p.numel()| is the number of entries of a tensor \verb|p|, and \verb|p.requires_grad| tells you whether \verb|p| is trainable. The number is printed when you run \verb|python pytorch_cnn.py|; you can check it against a hand calculation as in theory question Q3.2(d).
+
+\subsection{(2 pts) PyTorch CNN - Overall Test}
+Now, you can run python \verb|pytorch_cnn.py| in the terminal to test your implementation. Your model will run on the MNIST dataset for 10 epochs. You should get an accuracy of at least 0.94 on the test set. On Gradescope, these points are awarded if your network trains and learns a small synthetic image dataset.
+
+\subsection{(2 pts) PyTorch CNN - Analysis of Learning Curve}
+Once you have run the program, you will see a plot of the training and validation loss and accuracy curves. Based on the graph and the output of the program, fill in the \path{report_my_judgement} method so that it returns a string that describes the performance of the neural network by the end of training. Return \verb|underfitting| if the neural network is underfitting, \verb|overfitting| if the neural network is overfitting, and \verb|generalizing| if the neural network is generalizing.
+
+Running \verb|python pytorch_cnn.py| saves the plot as \path{pytorch_cnn_train_val_metrics.png}; include it in the \textbf{Programming Report}.
+
+\clearpage
+\section*{Submission}
+
+This homework has \textbf{three separate assignments on Gradescope}. Make sure you submit to all three.
+
+\begin{enumerate}
+    \item \textbf{HW4 -- Theory} (60 pts): a PDF with your answers to the theoretical questions (Q1--Q3).
+    \item \textbf{HW4 -- Programming} (41 pts, autograded): upload the following four files, and nothing else:
+    \begin{itemize}
+        \item \verb|numpy_ann.py|
+        \item \verb|pytorch_ann.py|
+        \item \verb|pytorch_cnn.py|
+        \item \verb|utils.py|
+    \end{itemize}
+    \item \textbf{HW4 -- Programming Report} (1 pt): a \textbf{separate} PDF containing
+    \begin{itemize}
+        \item your learning rate analysis for the Numpy ANN (Section 1.11),
+        \item the plot \path{pytorch_ann_train_val_metrics.png} (Section 2),
+        \item the plot \path{pytorch_cnn_train_val_metrics.png} (Section 3).
+    \end{itemize}
+    Do \textbf{not} put the plots or the learning rate analysis in your theory submission: they will only be graded in the Programming Report. The plots support your \path{report_my_judgement} answers and are required, even though the judgements themselves are graded by the autograder.
+\end{enumerate}
+
+The programming part is worth 42 points in total: 41 points from the autograder and 1 point from the Programming Report.
+
+
+\end{document}
