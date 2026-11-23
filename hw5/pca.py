@@ -30,7 +30,7 @@ class PCA():
         """
         
         # >>> YOUR CODE HERE >>>
-        self.n_components = ...
+        self.n_components = n_components
         # <<< END OF YOUR CODE <<<
 
     def cov(self, X: np.ndarray) -> np.ndarray:
@@ -54,7 +54,7 @@ class PCA():
 
         # Compute the covariance matrix
         # >>> YOUR CODE HERE >>>
-        cov = ...
+        cov = np.cov(X, rowvar=False)
         # <<< END OF YOUR CODE <<<
 
         return cov
@@ -84,7 +84,7 @@ class PCA():
 
         # Compute the eigenvalues and eigenvectors, use np.linalg.eigh
         # >>> YOUR CODE HERE >>>
-        eigen_values, eigen_vectors = ..., ...
+        eigen_values, eigen_vectors = np.linalg.eigh(cov_matrix)
         # <<< END OF YOUR CODE <<<
 
         return eigen_values, eigen_vectors
@@ -115,29 +115,30 @@ class PCA():
 
         # Compute the covariance matrix
         # >>> YOUR CODE HERE >>>
-        cov_matrix = ...
+        cov_matrix = self.cov(X)
         # <<< END OF YOUR CODE <<<
 
         # Compute the eigenvalues and eigenvectors
         # >>> YOUR CODE HERE >>>
-        eigen_values, eigen_vectors = ..., ...
+        eigen_values, eigen_vectors = self.eig(cov_matrix)
         # <<< END OF YOUR CODE <<<
 
         # Sort the eigenvalues and eigenvectors, argsort may be useful
         # >>> YOUR CODE HERE >>>
-        # idx = ...
-        # eigen_values = ...
-        # eigen_vectors = ...
+        idx = np.argsort(eigen_values)[::-1]    #reverse so largest first
+        eigen_values = eigen_values[idx]
+        eigen_vectors = eigen_vectors[:, idx]
         # <<< END OF YOUR CODE <<<
         # Store the first n eigenvectors
         # >>> YOUR CODE HERE >>>
-        self.components_ = ...
+        self.components_ = eigen_vectors[:, :self.n_components]
         # <<< END OF YOUR CODE <<<
 
         # Store the explained variance ratio
         # >>> YOUR CODE HERE >>>
-        self.explained_variance_ratio_ = ...
-        self.explained_variance_ratio_1024 = ...
+        # total var = sum of eigenvals
+        self.explained_variance_ratio_ = eigen_values[:self.n_components] / np.sum(eigen_values)
+        self.explained_variance_ratio_1024 = eigen_values[:1024] / np.sum(eigen_values)
         # <<< END OF YOUR CODE <<<
 
         return self
@@ -164,12 +165,12 @@ class PCA():
 
         # Zero-center the data (subtract the mean)
         # >>> YOUR CODE HERE >>>
-        # X = ...
+        X = X - np.mean(X, axis=0)
         # <<< END OF YOUR CODE <<<
 
         # Project the data onto the eigenvectors
         # >>> YOUR CODE HERE >>>
-        X_transformed = ...
+        X_transformed = X @ self.components_
         # <<< END OF YOUR CODE <<<
 
         return X_transformed
@@ -197,7 +198,7 @@ class PCA():
 
         # Invert the transformation, don't forget to add the mean back in
         # >>> YOUR CODE HERE >>>
-        X_reconstructed = ...
+        X_reconstructed = X_transformed @ self.components_.T + np.mean(X_original, axis=0)
         # <<< END OF YOUR CODE <<<
 
 
@@ -216,7 +217,7 @@ class PCA():
         """
 
         # >>> YOUR CODE HERE >>>
-        judgement = -1
+        judgement = 7   # the elbow graph bends around 5-7 so i picked 7
         # <<< END OF YOUR CODE <<<
         assert isinstance(judgement, int)
         return judgement

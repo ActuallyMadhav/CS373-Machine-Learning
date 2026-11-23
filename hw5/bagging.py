@@ -35,9 +35,9 @@ class Bagging(BaseEnsemble):
         """
 
         # >>> YOUR CODE HERE >>>
-        self.random_seed = ...
-        self.learners = ...
-        # np.random.seed(...)
+        self.random_seed = random_seed
+        self.learners = [DecisionTreeClassifier(random_state=self.random_seed) for i in range(n_learners)]
+        np.random.seed(self.random_seed)
         # <<< END OF YOUR CODE <<<
 
     def _prepare_sample(self, X: np.ndarray) -> np.ndarray:
@@ -59,7 +59,7 @@ class Bagging(BaseEnsemble):
         """
 
         # >>> YOUR CODE HERE >>>
-        indices = ...
+        indices = np.random.choice(X.shape[0], size=X.shape[0], replace=True)
         # <<< END OF YOUR CODE <<<
         return indices
 
@@ -91,7 +91,9 @@ class Bagging(BaseEnsemble):
 
         # Train each learner on a bootstrap sample
         # >>> YOUR CODE HERE >>>
-        sample = ...
+        for learner in self.learners:
+            sample = self._prepare_sample(X)
+            learner.fit(X[sample], y[sample])
         # <<< END OF YOUR CODE <<<
 
     def predict(self, X: np.ndarray) -> np.ndarray:
@@ -123,17 +125,17 @@ class Bagging(BaseEnsemble):
 
         # Predict the labels for each learner
         # >>> YOUR CODE HERE >>>
-        predictions = ...
+        predictions = np.array([learner.predict(X) for learner in self.learners]).astype(int)
         # <<< END OF YOUR CODE <<<
 
         # Count the number of votes for each label
         # >>> YOUR CODE HERE >>>
-        counts = ...
+        counts = np.apply_along_axis(np.bincount, 0, predictions, minlength=predictions.max()+1)
         # <<< END OF YOUR CODE <<<
 
         # Return the label with the most votes
         # >>> YOUR CODE HERE >>>
-        y_pred = ...
+        y_pred = np.argmax(counts, axis=0)
         # <<< END OF YOUR CODE <<<
         return y_pred
 
